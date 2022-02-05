@@ -98,5 +98,11 @@ int main() {
 	std::cout << "-------------------------" << std::endl;
 	std::cout << std::left << std::setw(25) << "Visų prekių kaina" << visoKaina << std::endl;
 
+	for (unsigned i = 0; i < n; ++i) {
+		delete prekes[i];
+	}
+
+	delete[] prekes;
+
 	return 0;
 }

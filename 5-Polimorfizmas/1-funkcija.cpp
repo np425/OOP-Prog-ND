@@ -1,4 +1,5 @@
-#include <iostream> #include <cmath> // pow
+#include <iostream> 
+#include <cmath> // pow
 
 /*
 
@@ -76,6 +77,10 @@ int main() {
 
 	for (int i = 0; i != 3; ++i) {
 		std::cout << func[i]->pav() << ": y=" << func[i]->f(x) << std::endl;
+	}
+
+	for (int i = 0; i != 3; ++i) {
+		delete func[i];
 	}
 
 	return 0;

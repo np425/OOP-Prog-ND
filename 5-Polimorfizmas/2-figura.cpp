@@ -100,5 +100,9 @@ int main() {
 		std::cout << fig[i]->pav() << ": S=" << fig[i]->plotas() << std::endl;
 	}
 
+	for (int i = 0; i != 3; ++i) {
+		delete fig[i];
+	}
+
 	return 0;
 }
