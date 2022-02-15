@@ -5,37 +5,49 @@
 /*
 
 5 Užduotis:
- - Klasė taškas, susidea iš viešų duomenų:
-   - pradžios koordinatės
-   - pabaigos koordinatės
- - Klasė atkarpa, susideda iš
-   - Viešų duomenų:
-     - Atkarpos pradžia (taškas)
-     - Atkarpos pabaiga (taškas)
-   - Viešų funkcijų:
-     - atkarpos ilgio skaičiavimas
+ - Klasė GeometrineFigura:
+   - kraštinių skaičius
+   - taisyklingumas
+ - Nuskaito duomenis
+ - Įrašo duomenis į GeometrineFigura objektą
+ - Atspausdina duomenis
 */
 
-class Taskas {
-public:
-	int x;
-	int y;
-};
+class GeometrineFigura {
+    unsigned krastSk;
+    bool taisyklingumas;
 
-class Atkarpa {
 public:
-	Taskas pradzia;
-	Taskas pabaiga;
-	unsigned skaiciuotiAts() {
-		return sqrt(POW_2(pabaiga.x-pradzia.x)+POW_2(pabaiga.y-pradzia.y));
-	}
+    GeometrineFigura() {}
+    GeometrineFigura(unsigned krastSk, bool taisyklingumas) : krastSk(krastSk), taisyklingumas(taisyklingumas) {}
+
+    unsigned gautiKrastSk() { return krastSk; }
+    void keistiKrastSk(unsigned krastSk) { this->krastSk = krastSk; }
+
+    unsigned gautiTaisyklinguma() { return taisyklingumas; }
+    void keistiTaisyklinguma(unsigned taisyklingumas) { this->taisyklingumas = taisyklingumas; }
+
 };
 
 int main() {
-	Atkarpa atk;
-	std::cout << "Įveskite atkarpos pradžios koordinates (x y): ";
-	std::cin >> atk.pradzia.x >> atk.pradzia.y;
-	std::cout << "Įveskite atkarpos pabaigos koordinates (x y): ";
-	std::cin >> atk.pabaiga.x >> atk.pabaiga.y;
-	std::cout << "Atstumas tarp dviejų taškų: " << atk.skaiciuotiAts() << std::endl;
+    unsigned krastSk;
+    char tais;
+
+    std::cout << "Įveskite figūros kraštinių skaičių: ";
+    std::cin >> krastSk;
+
+    while (true) {
+        std::cout << "Įveskite figūros taisyklingumą (t/n): ";
+        std::cin >> tais;
+
+        if (tais == 't' || tais == 'n') break;
+        std::cout << "Nesupratau ką ivedėte, prašau įvesti dar kartą." << std::endl;
+    }
+
+    GeometrineFigura fig(krastSk, tais=='t');
+
+    std::cout << "Kraštinių skaičius: " << fig.gautiKrastSk() << std::endl;
+    std::cout << "Taisyklingumas: " << (fig.gautiTaisyklinguma() ? "taip" : "ne") << std::endl;
+
+    return 0;
 }
