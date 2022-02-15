@@ -14,18 +14,6 @@
      - Atkarpos pabaiga (taškas)
    - Viešų funkcijų:
      - atkarpos ilgio skaičiavimas
-
-4 Užduotis:
- - Klasė darbuotojas, su privačiais duomenimis: - amžius
-   - darbo patirtis
-   - atlyginimas
-   - mokesčiai
- - Leidžia priskirti pradinius duomenis, sukūrimo metu
- - Skaičiuoja mokesčius
- - Juos atspausdina
- - Įrašo į darbuotojo objektą duomenis
- - Atspausdina darbuotojo objekto duomenis
-
 */
 
 class Taskas {
