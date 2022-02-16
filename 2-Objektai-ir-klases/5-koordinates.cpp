@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath> // sqrt
-#define POW_2(x) (x*x)
 
 /*
 
