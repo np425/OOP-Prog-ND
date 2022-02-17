@@ -1,3 +1,3 @@
 # Objektinio Programavimo (OOP) Namų Darbai
 
-- Kalba: C/C++
+- Kalba: C++
