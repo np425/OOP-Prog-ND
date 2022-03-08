@@ -1,16 +1,9 @@
 #include <iostream>
 #include <cmath> // sqrt
-#define POW_2(x) (x*x)
 
 /*
 
 3 Užduotis:
- - Klasė taškas:
-   - x
-   - y
- - Klasė atkarpa
-   - 2 taškai
-   - atstumas
  - Klasė skritulys:
    - Spindulys
    - Plotas
@@ -21,116 +14,67 @@
  - Įrašo į kūgi duomenis
  - Apskaičiuoja jo tūrį
  - Tūrį atspausdina
+
 */
 
-class Taskas {
-public:
-	double x;
-	double y;
-};
-
-class Atkarpa {
-	double ats;
-	Taskas pradzia;
-	Taskas pabaiga;
-
-	void skaiciuotiAts() {
-		this->ats = sqrt(POW_2(pabaiga.x-pradzia.x)+POW_2(pabaiga.y-pradzia.y));
-	}
-
-public:
-	void keistiPradziosTaska(Taskas pradzia) { 
-		this->pradzia = pradzia;
-		skaiciuotiAts();
-	}
-	Taskas gautiPradziosTaska() { return this->pradzia; }
-
-	void keistiPabaigosTaska(Taskas pabaiga) { 
-		this->pabaiga = pabaiga;
-		skaiciuotiAts();
-	}
-	Taskas gautiPabaigosTaska() { return this->pabaiga; }
-
-	double gautiAts() { return this->ats; }
-};
-
 class Skritulys {
-	Atkarpa r;
+	double r;
 	double s;
 
 public:
-	void keistiSpinduli(Atkarpa r) {
+	void keistiSpinduli(double r) {
 		this->r = r;
-		this->s = M_PI*r.gautiAts()*r.gautiAts();
+		this->s = M_PI*r*r;
 	}
-	double gautiSpinduli() { return this->r.gautiAts(); }
-	double gautiPlota() { return this->s; } 
+	double gautiSpinduli() { return this->r; }
+	double gautiPlota() { return this->s; }
+
 };
 
 class Kugis {
 	Skritulys pagr[2];
-	Atkarpa h;
+	double h;
 	double v;
 
 	void skaiciuotiTuri() {
 		this->v = (pagr[0].gautiPlota() 
 	        	  + sqrt(pagr[0].gautiPlota() * pagr[1].gautiPlota()) 
-	         	  + pagr[1].gautiPlota()) / 3 * this->h.gautiAts();
+	         	  + pagr[1].gautiPlota()) / 3 * this->h;
 	}
 
 public:
 	double gautiTuri() { return this->v; }
 
-	void keisti1PagrSpinduli(Atkarpa r) { 
+	void keisti1PagrSpinduli(double r) { 
 		this->pagr[0].keistiSpinduli(r);
 		skaiciuotiTuri();
 	}
 	Skritulys gauti1Pagr() { return this->pagr[0]; }
 
-	void keisti2PagrSpinduli(Atkarpa r) {
+	void keisti2PagrSpinduli(double r) {
 		this->pagr[1].keistiSpinduli(r);
 		skaiciuotiTuri();
 	};
 	Skritulys gauti2Pagr() { return this->pagr[1]; }
 
-	void keistiAukstine(Atkarpa h) { 
+	void keistiAukstine(double h) { 
 		this->h = h;
 		skaiciuotiTuri();
 	}
-	Atkarpa gautiAukstine() { return this->h; }
+	double gautiAukstine() { return this->h; }
 	
 };
 
 int main() {
-	Atkarpa r1, r2, h;
-	Taskas taskas;
-	double x, y;
-
+	double r1, r2, h;
 	Kugis kugis;
 
-	std::cout << "1 pagrindo spindulio pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r1.keistiPradziosTaska(taskas);
-	
-	std::cout << "1 pagrindo spindulio pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r1.keistiPabaigosTaska(taskas);
-
-	std::cout << "2 pagrindo spindulio pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r2.keistiPradziosTaska(taskas);
-	
-	std::cout << "2 pagrindo spindulio pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r2.keistiPabaigosTaska(taskas);
-
-	std::cout << "Aukštinės pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	h.keistiPradziosTaska(taskas);
-	
-	std::cout << "Aukštinės pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	h.keistiPabaigosTaska(taskas);
+	std::cout << "1 pagrindo spindulys: ";
+	std::cin >> r1;
+	std::cout << "2 pagrindo spindulys: ";
+	std::cin >> r2;
+	std::cout << "Kūgio aukštinė: ";
+	std::cin >> h;
 
 	kugis.keisti1PagrSpinduli(r1);
 	kugis.keisti2PagrSpinduli(r2);
