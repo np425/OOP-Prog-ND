@@ -4,17 +4,11 @@
 
 /*
 
-1 Užduotis:
- - Klasė stačiakampis <T1,T2>
-   - ilgis (T1)
-   - plotis (T2)
-   - plotas (T2)
- - Sukuria trys stačiakampio objektus:
-   1. <int,int>
-   2. <double,double>
-   3. <int,double>
- - Juos nuskaito
- - Atspausdina kiekvieno stačiakampio plotą
+2 Užduotis:
+ - Klasė trikampis
+ 	- a
+	- b
+	- c 
 */
 
 class NetaisyklingasTrikampis {
