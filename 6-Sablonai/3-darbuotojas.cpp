@@ -3,7 +3,7 @@
 
 /*
 
-2 Užduotis:
+3 Užduotis:
  - Klasė darbuotojas: 
    - amžius
    - darbo patirtis
@@ -20,10 +20,20 @@ class Darbuotojas {
 	unsigned atlyginimas;
 
 public:
+	class NetinkamasAmzius{};
+	class NetinkamaPatirtis{};
+	class MazasAtlyginimas{};
+
 	Darbuotojas(unsigned amzius, unsigned darboPatirtis, unsigned atlyginimas) {
-		if (amzius < 18 || amzius > 70) throw std::runtime_error("Amžius neatitinka ribojimų");
-		if (darboPatirtis > amzius) throw std::runtime_error("Patirtis aukštesnė negu amžius");
-		if (atlyginimas < 300) throw std::runtime_error("Atlyginimas mažiau už 300");
+		if (amzius < 18 || amzius > 70) {
+			throw NetinkamasAmzius();
+		} 
+		if (darboPatirtis > amzius) {
+			throw NetinkamaPatirtis();
+		}
+		if (atlyginimas < 300) {
+			throw MazasAtlyginimas();
+		}
 		
 		this->amzius = amzius;
 		this->darboPatirtis = darboPatirtis;
@@ -52,8 +62,12 @@ int main() {
 	try {
 		Darbuotojas darb(amzius, patirtis, atlyginimas);
 		darb.spausdintiDuomenis();
-	} catch (const std::exception& e) {
-		std::cerr << e.what() << std::endl;
+	} catch (const Darbuotojas::NetinkamasAmzius&) {
+		std::cerr << "Netinkamas amžius" << std::endl;
+	} catch (const Darbuotojas::NetinkamaPatirtis&) {
+		std::cerr << "Netinkama patirtis" << std::endl;
+	} catch (const Darbuotojas::MazasAtlyginimas&) {
+		std::cerr << "Per mažas atlyginimas" << std::endl;
 	}
 
 	return 0;
