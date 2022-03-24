@@ -3,7 +3,7 @@
 
 /*
 
-3 Užduotis:
+4 Užduotis:
  - Klasė darbuotojas: 
    - amžius
    - darbo patirtis
