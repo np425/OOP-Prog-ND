@@ -35,9 +35,6 @@ class Trikampis {
 public:
 	Trikampis(double a, double b, double c) : a(a), b(b), c(c) {
 		ilg = ilgKrastine();
-		if (a > b && a > c) {
-			ilg = a;
-		}
 		
 		if (a+b < c || a+c < b || b+c < a) {
 			throw NetaisyklingasTrikampis("Ilgiausia kraštinė: " + std::to_string(ilg));
