@@ -5,7 +5,7 @@
 
 /*
 
-3 Užduotis:
+1 Užduotis:
  - Klasė prekės:
    - pavadinimas
    - kiekis
