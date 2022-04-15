@@ -16,6 +16,7 @@
  - Objektai yra masyve
  - Suskaičiuojama prekių vertės
  - Suskaičiuojama visų prekių vertės per statinį kintamąjį
+ - Laikoma brangiausia, ir pigiausia prekes per visa programas leidima
  - Kainos spausdinamos
 */
 
