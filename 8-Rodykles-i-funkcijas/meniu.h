@@ -231,7 +231,7 @@ public:
     }
 
     virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
-        return pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS; 
+        return pasirinkimas <= 3; 
     }
 
     virtual void rodyti() const {
