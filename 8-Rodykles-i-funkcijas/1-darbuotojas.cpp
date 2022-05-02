@@ -16,7 +16,7 @@
    - darbo patirtis
    - atlyginimas
 
-   - Pagal Pasirinkimo Enumeraciją, galima dinamiškai pasirinkti kuriuos duomenis spausdinti
+   - Pagal Pasirinkimo Enumeraciją, galima dinamiškai pasirinkti kuriuos duomenis įrašyti bei spausdinti
 
  - Leidžia pasirinkti kuriuos duomenis įrašyti ar keisti (visi duomenys turi būti užpildyti)
  - Įrašo į darbuotojo objektą pasirinktinus duomenis

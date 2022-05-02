@@ -98,4 +98,17 @@ public:
    }
 };
 
+const std::array<Darbuotojas, Personalas::DARBUOTOJU_KIEKIS> PRADINIAI_DARBUOTOJAI = {
+    Darbuotojas("Donald", "Duck", "Duck", 10, 10, 2),
+    Darbuotojas("Rick", "Astley", "Singer", 40, 10, 30000),
+    Darbuotojas("Elon", "Musk", "Engineer", 50, 30, 100000),
+    Darbuotojas("John", "Cena", "Wrestler", 45, 30, 50000),
+    Darbuotojas("Robert", "Downey Jr.", "Actor", 57, 40, 70000),
+    Darbuotojas("Dwayne", "Johnson", "Actor", 49, 20, 65000),
+    Darbuotojas("Leonardo", "DiCaprio", "Actor", 47, 30, 65000),
+    Darbuotojas("Ryan", "Reynolds", "Actor", 45, 30, 50000),
+    Darbuotojas("Keanu", "Reeves", "Actor", 57, 30, 35000),
+    Darbuotojas("Steven", "Spielberg", "Film Director", 75, 40, 55000)
+};
+
 #endif
