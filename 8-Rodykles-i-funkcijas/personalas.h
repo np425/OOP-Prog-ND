@@ -52,7 +52,7 @@ public:
    } 
 
    bool duomenysUzpildyti() const {
-       for (int i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
+       for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
            if (!mDarbuotojai[i].duomenysUzpildyti()) {
                return false;
            }
@@ -62,7 +62,7 @@ public:
 
    void spausdintiDarbuotojus(const Darbuotojas::DuomenuPasirinkimas& spausdinimoTvarka) const {
        std::cout << LINE << std::endl;
-       for (int i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
+       for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
            mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);
            std::cout << LINE << std::endl;
        }
@@ -71,7 +71,7 @@ public:
    // Filtravimas pagal amžių (2 užduotis)
    void filtruotiAmziu(bool (*fAmziausFiltras)(unsigned), const Darbuotojas::DuomenuPasirinkimas& spausdinimoTvarka) const {
        std::cout << LINE << std::endl;
-       for (int i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
+       for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
            if (fAmziausFiltras(mDarbuotojai[i].gautiAmziu())) {
                mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);
                std::cout << LINE << std::endl;
@@ -88,7 +88,7 @@ public:
         }
 
         std::cout << LINE << std::endl;
-        for (int i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
+        for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
            unsigned duomuo = mDarbuotojai[i].gautiPasirinkima<unsigned>(duomensPasirinkimas);
            if (filtras(duomuo, min, max)) {
                mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);

@@ -9,7 +9,7 @@
 
 class Meniu {
 public:
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) = 0;
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) = 0;
 
     virtual void rodyti() const = 0;
 
@@ -40,8 +40,8 @@ public:
     DarbuotojoIvestiesMeniu(Darbuotojas& darb) : mDarb(darb) {
     }
 
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) {
-        return pasirinkimas >= 0 && pasirinkimas <= Darbuotojas::DuomenuKiekis; 
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
+        return pasirinkimas <= Darbuotojas::DuomenuKiekis; 
     }
 
     virtual void rodyti() const {
@@ -109,8 +109,8 @@ public:
     DarbuotojoDuomenuTvarkosSpausdinimoMeniu(Darbuotojas::DuomenuPasirinkimas& spausdinimoTvarka) : mSpausdinimoTvarka(spausdinimoTvarka)  {
     }
 
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) {
-        return pasirinkimas >= 0 && pasirinkimas <= Darbuotojas::DuomenuKiekis; 
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
+        return pasirinkimas <= Darbuotojas::DuomenuKiekis; 
     }
 
     virtual void rodyti() const {
@@ -144,13 +144,13 @@ public:
     PersonaloIvestiesMeniu(Personalas& personalas) : mPersonalas(personalas) {
     }
 
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) {
-        return pasirinkimas >= 0 && pasirinkimas <= Personalas::DARBUOTOJU_KIEKIS; 
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
+        return pasirinkimas <= Personalas::DARBUOTOJU_KIEKIS; 
     }
 
     virtual void rodyti() const {
         std::cout << "0. " << "Baigti pildyti personalą" << std::endl;
-        for (int i = 0; i < Personalas::DARBUOTOJU_KIEKIS; ++i) {
+        for (unsigned i = 0; i < Personalas::DARBUOTOJU_KIEKIS; ++i) {
             bool uzpildytas = mPersonalas.gautiDarbuotoja(i).duomenysUzpildyti();
 
             std::cout << i+1 << ". " << (uzpildytas ? "Keisti" : "Pildyti") 
@@ -190,8 +190,8 @@ public:
         : mPersonalas(personalas), mSpausdinimoTvarka(spausdinimoTvarka) {
     }
 
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) {
-        return pasirinkimas >= 0 && pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS; 
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
+        return pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS; 
     }
 
     virtual void rodyti() const {
@@ -230,8 +230,8 @@ public:
         : mPersonalas(personalas), mSpausdinimoTvarka(spausdinimoTvarka) {
     }
 
-    virtual bool tinkamasPasirinkimas(int pasirinkimas) {
-        return pasirinkimas >= 0 && pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS; 
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) {
+        return pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS; 
     }
 
     virtual void rodyti() const {
