@@ -1,12 +1,7 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-
-#include "darbuotojas.h"
-#include "personalas.h"
-#include "meniu.h"
+#include "meniu/personalo.h"
 
 /*
+
 3 Užduotis:
  - Klasė Personalas:
    - 10 darbuotoju
@@ -21,7 +16,7 @@
 */
 
 int main() {
-    Personalas personalas(PRADINIAI_DARBUOTOJAI);
+    Personalas personalas(gautiPradiniusDarbuotojus());
     Darbuotojas::DuomenuPasirinkimas spausdinimoTvarka(Darbuotojas::PRADINE_DUOMENU_PASIRINKIMO_TVARKA);
 
     PersonaloIvestiesMeniu personaloIvestiesMeniu(personalas);
@@ -32,5 +27,5 @@ int main() {
     spausdinimoTvarkosMeniu.aptarnauti();
     personaloFiltravimoMeniu.aptarnauti();
 
-	return 0;
+    return 0;
 }

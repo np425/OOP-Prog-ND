@@ -1,9 +1,4 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-
-#include "darbuotojas.h"
-#include "meniu.h"
+#include "meniu/darbuotojo.h"
 
 /*
 
@@ -25,7 +20,7 @@
 
 
 int main() {
-	//Darbuotojas darb;
+    //Darbuotojas darb;
     Darbuotojas darb("Nerijus", "Pocevičius", "IT Inžinierius", 19, 5, 200);
 
     Darbuotojas::DuomenuPasirinkimas spausdinimoTvarka(Darbuotojas::PRADINE_DUOMENU_PASIRINKIMO_TVARKA);
@@ -38,5 +33,5 @@ int main() {
 
     darb.spausdintiDuomenis(spausdinimoTvarka);
 
-	return 0;
+    return 0;
 }
