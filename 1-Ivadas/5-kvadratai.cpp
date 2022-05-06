@@ -1,4 +1,4 @@
-#include <iostream> // std::cout, std::endl
+#include <iostream>
 
 /*
 
@@ -8,12 +8,15 @@
 */
 
 int main() {
-	int n;
-	std::cout << "Įveskite skaičių: ";
-	std::cin >> n;
-	for (int i = 1; i <= n; ++i) {
-		std::cout << "Skaičiaus " << i << " kvadratas yra " << i*i << ";" << std::endl;
-	}
-	return 0;
+    unsigned skaiciuKiekis;
+
+    std::cout << "Įveskite skaičių: ";
+    std::cin >> skaiciuKiekis;
+
+    for (unsigned i = 1; i <= skaiciuKiekis; ++i) {
+        std::cout << "Skaičiaus " << i << " kvadratas yra " << i * i << ";" << std::endl;
+    }
+
+    return 0;
 }
 
