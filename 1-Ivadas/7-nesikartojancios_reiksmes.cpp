@@ -3,9 +3,9 @@
 #include <random>
 #include <array>
 
-constexpr unsigned MASYVO_DYDIS = 5;
-constexpr int MAX_GEN_SK = 10;
-constexpr int MIN_GEN_SK = -10;
+constexpr unsigned MASYVO_DYDIS = 100000;
+constexpr int MAX_GEN_SK = 10000000;
+constexpr int MIN_GEN_SK = -10000000;
 
 typedef std::array<int, MASYVO_DYDIS> Masyvas;
 
@@ -19,21 +19,24 @@ typedef std::array<int, MASYVO_DYDIS> Masyvas;
 
 */
 
-inline void generuotiMasyva(Masyvas &masyvas) {
+inline void generuotiMasyva(Masyvas::iterator it, Masyvas::const_iterator end) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<int> dist(MIN_GEN_SK, MAX_GEN_SK);
 
-    for (int &reiksme: masyvas) {
-        reiksme = dist(mt);
+    for (; it < end; ++it) {
+        *it = dist(mt);
     }
 }
 
-inline void spausdintiNesikartojanciasReiksmes(const Masyvas &masyvas) {
-    auto praeitaReiksme = masyvas.begin();
-    auto it = masyvas.begin() + 1;
+inline void spausdintiNesikartojanciasReiksmes(Masyvas::iterator it, Masyvas::const_iterator end) {
+    if (it == end) {
+        return;
+    }
 
-    for (; it < masyvas.end(); ++it) {
+    auto praeitaReiksme = it;
+
+    for (++it; it < end; ++it) {
         if (*it == *praeitaReiksme) {
             continue;
         }
@@ -50,25 +53,27 @@ inline void spausdintiNesikartojanciasReiksmes(const Masyvas &masyvas) {
     }
 }
 
-inline void spausdintiMasyva(const Masyvas& masyvas) {
-    for (int reiksme : masyvas) {
-        std::cout << reiksme << std::endl;
+inline void spausdintiMasyva(Masyvas::iterator it, Masyvas::const_iterator end) {
+    for (; it < end; ++it) {
+        std::cout << *it << std::endl;
     }
 }
 
 int main() {
+    std::ostream::sync_with_stdio(false);
+
     Masyvas masyvas{};
 
-    generuotiMasyva(masyvas);
+    generuotiMasyva(masyvas.begin(), masyvas.end());
 
     std::sort(masyvas.begin(), masyvas.end());
 
     std::cout << "Masyvas:" << std::endl;
-    spausdintiMasyva(masyvas);
+    spausdintiMasyva(masyvas.begin(), masyvas.end());
     std::cout << std::endl;
 
     std::cout << "Nesikartojančios reikšmės:" << std::endl;
-    spausdintiNesikartojanciasReiksmes(masyvas);
+    spausdintiNesikartojanciasReiksmes(masyvas.begin(), masyvas.end());
 
     return 0;
 }
