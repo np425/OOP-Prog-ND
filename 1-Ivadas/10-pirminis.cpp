@@ -29,12 +29,12 @@ bool arPirminis(int n) {
 }
 
 int main() {
-    int sk;
+    int skaicius;
 
-    std::cout << "Įveskite skaičių: ";
-    std::cin >> sk;
+    std::cout << "Patikrinti skaičių, ar jis yra pirminis: ";
+    std::cin >> skaicius;
 
-    std::cout << "Skaičius " << sk << " yra " << (arPirminis(sk) ? "pirminis" : "ne pirminis") << std::endl;
+    std::cout << "Skaičius " << skaicius << " yra " << (arPirminis(skaicius) ? "pirminis" : "ne pirminis") << std::endl;
 
     return 0;
 }

@@ -11,7 +11,7 @@
 int main() {
     int skaicius, skaitmenuSuma = 0;
 
-    std::cout << "Įveskite skaičių: ";
+    std::cout << "Įveskite skaičių, kurio skaitmenis susuomuoti: ";
     std::cin >> skaicius;
 
     for (int sk = std::abs(skaicius); sk; sk /= 10) {

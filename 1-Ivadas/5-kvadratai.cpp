@@ -8,12 +8,12 @@
 */
 
 int main() {
-    unsigned skaiciuKiekis;
+    unsigned kvadratuKiekis;
 
-    std::cout << "Įveskite skaičių: ";
-    std::cin >> skaiciuKiekis;
+    std::cout << "Įveskite skaičių kvadratų kiekį: ";
+    std::cin >> kvadratuKiekis;
 
-    for (unsigned i = 1; i <= skaiciuKiekis; ++i) {
+    for (unsigned i = 1; i <= kvadratuKiekis; ++i) {
         std::cout << "Skaičiaus " << i << " kvadratas yra " << i * i << ";" << std::endl;
     }
 

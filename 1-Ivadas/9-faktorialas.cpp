@@ -23,12 +23,12 @@ int factorial(int n) {
 }
 
 int main() {
-    int sk;
+    int skaicius;
 
-    std::cout << "Įveskite skaičių: ";
-    std::cin >> sk;
+    std::cout << "Įveskite skaičių, kurio faktorialą gauti: ";
+    std::cin >> skaicius;
 
-    std::cout << factorial(sk) << std::endl;
+    std::cout << factorial(skaicius) << std::endl;
 
     return 0;
 }
