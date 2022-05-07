@@ -12,30 +12,30 @@
 
 bool arPirminis(int n) {
     // Leidžia skaičiuoti pirminį skaičių nuo neigiamo skaičiaus
-	n = abs(n);
+    n = abs(n);
 
-	if (n < 2) {
-		// Pirmasis pirminis skaičius yra 2
-		return false;
-	}
+    if (n < 2) {
+        // Pirmasis pirminis skaičius yra 2
+        return false;
+    }
 
-	for (int i = 2; i <= n/2; ++i) {
-		if (n % i == 0) {
+    for (int i = 2; i <= n / 2; ++i) {
+        if (n % i == 0) {
             return false;
         }
-	}
+    }
 
-	return true;
+    return true;
 }
 
 int main() {
-	int sk;
+    int sk;
 
-	std::cout << "Įveskite skaičių: ";
-	std::cin >> sk;
+    std::cout << "Įveskite skaičių: ";
+    std::cin >> sk;
 
     std::cout << "Skaičius " << sk << " yra " << (arPirminis(sk) ? "pirminis" : "ne pirminis") << std::endl;
 
-	return 0;
+    return 0;
 }
 

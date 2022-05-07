@@ -10,26 +10,26 @@
 */
 
 int factorial(int n) {
-	int res = n;
+    int res = n;
 
     // Leidžia skaičiuoti faktorialą nuo neigiamo skaičiaus
-	n = std::abs(n);
+    n = std::abs(n);
 
     for (--n; n > 0; --n) {
         res *= n;
     }
 
-	return res;
+    return res;
 }
 
 int main() {
-	int sk;
+    int sk;
 
-	std::cout << "Įveskite skaičių: ";
-	std::cin >> sk;
+    std::cout << "Įveskite skaičių: ";
+    std::cin >> sk;
 
-	std::cout << factorial(sk) << std::endl;
+    std::cout << factorial(sk) << std::endl;
 
-	return 0;
+    return 0;
 }
 

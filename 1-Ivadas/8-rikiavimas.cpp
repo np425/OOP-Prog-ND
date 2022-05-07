@@ -8,6 +8,7 @@ constexpr int MAX_GEN_SK = +100;
 constexpr int MIN_GEN_SK = -100;
 
 typedef std::array<int, MASYVO_DYDIS> Masyvas;
+
 /*
 
 1.8 užduotis:
@@ -49,5 +50,5 @@ int main() {
     spausdintiMasyva(masyvas.begin(), masyvas.end());
     std::cout << std::endl;
 
-	return 0;
+    return 0;
 }
