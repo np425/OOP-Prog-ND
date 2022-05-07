@@ -1,9 +1,12 @@
 #include <iostream>
-#include <cmath> // sqrt
+#include <cmath>
+#include <array>
+
+#define POW_2(x) ((x)*(x))
 
 /*
 
-3 Užduotis:
+3.3 Užduotis:
  - Klasė skritulys:
    - Spindulys
    - Plotas
@@ -18,67 +21,61 @@
 */
 
 class Skritulys {
-	double r;
-	double s;
+    double spindulys_;
+    double plotas_;
+
+    inline double skaiciuotiPlota() const {
+        return M_PI * POW_2(spindulys_);
+    }
 
 public:
-	void keistiSpinduli(double r) {
-		this->r = r;
-		this->s = M_PI*r*r;
-	}
-	double gautiSpinduli() { return this->r; }
-	double gautiPlota() { return this->s; }
+    explicit Skritulys(double spindulys) : spindulys_(spindulys) {
+        plotas_ = skaiciuotiPlota();
+    }
 
+    double gautiPlota() const {
+        return plotas_;
+    }
 };
 
 class Kugis {
-	Skritulys pagr[2];
-	double h;
-	double v;
+    std::array<Skritulys, 2> pagrindai_;
+    double aukstis_;
+    double turis_;
 
-	void skaiciuotiTuri() {
-		this->v = (pagr[0].gautiPlota() 
-	        	  + sqrt(pagr[0].gautiPlota() * pagr[1].gautiPlota()) 
-	         	  + pagr[1].gautiPlota()) / 3 * this->h;
-	}
+    inline double skaiciuotiTuri() {
+        return (pagrindai_[0].gautiPlota()
+                + std::sqrt(pagrindai_[0].gautiPlota() * pagrindai_[1].gautiPlota())
+                + pagrindai_[1].gautiPlota()) / 3 * aukstis_;
+    }
 
 public:
-	double gautiTuri() { return this->v; }
+    Kugis(std::array<double, 2> spinduliai, double aukstis) :
+        pagrindai_({Skritulys(spinduliai[0]), Skritulys(spinduliai[1])}), aukstis_(aukstis) {
+        turis_ = skaiciuotiTuri();
+    }
 
-	void keisti1PagrSpinduli(double r) { 
-		this->pagr[0].keistiSpinduli(r);
-		skaiciuotiTuri();
-	}
-	Skritulys gauti1Pagr() { return this->pagr[0]; }
-
-	void keisti2PagrSpinduli(double r) {
-		this->pagr[1].keistiSpinduli(r);
-		skaiciuotiTuri();
-	};
-	Skritulys gauti2Pagr() { return this->pagr[1]; }
-
-	void keistiAukstine(double h) { 
-		this->h = h;
-		skaiciuotiTuri();
-	}
-	double gautiAukstine() { return this->h; }
-	
+    double gautiTuri() const {
+        return turis_;
+    }
 };
 
 int main() {
-	double r1, r2, h;
-	Kugis kugis;
+    std::array<double, 2> spinduliai{};
+    double aukstis;
 
-	std::cout << "1 pagrindo spindulys: ";
-	std::cin >> r1;
-	std::cout << "2 pagrindo spindulys: ";
-	std::cin >> r2;
-	std::cout << "Kūgio aukštinė: ";
-	std::cin >> h;
+    std::cout << "1 pagrindo spindulys: ";
+    std::cin >> spinduliai[0];
 
-	kugis.keisti1PagrSpinduli(r1);
-	kugis.keisti2PagrSpinduli(r2);
-	kugis.keistiAukstine(h);
+    std::cout << "2 pagrindo spindulys: ";
+    std::cin >> spinduliai[1];
 
-	std::cout << "Kūgio plotas: " << kugis.gautiTuri() << std::endl;
+    std::cout << "Kūgio aukštinė: ";
+    std::cin >> aukstis;
+
+    Kugis kugis(spinduliai, aukstis);
+
+    std::cout << "Kūgio tūris: " << kugis.gautiTuri() << std::endl;
+
+    return 0;
 }

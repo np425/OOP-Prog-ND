@@ -1,78 +1,84 @@
 #include <iostream>
 #include <cmath>
+#include <array>
+
+#define POW_2(x) ((x)*(x))
 
 /*
 
-1 Užduotis:
+3.1 Užduotis:
  - Klasė Taškas:
   - x, y
   - implementuoja atimtį, tai yra atstumą tarp dviejų taškų
  - Klasė Stačiakampis:
    - 4 taškai
-   - plotas()
-   - perimetras()
+   - gautiPlota()
+   - gautiPerimetra()
 */
 
 class Taskas {
 public:
-	double x;
-	double y;
+    double x;
+    double y;
 
-	double operator-(const Taskas&);
+    double operator-(const Taskas &taskas) const {
+        return std::sqrt(POW_2(x - taskas.x) + POW_2(y - taskas.y));
+    }
+
+    friend std::istream &operator>>(std::istream &is, Taskas &taskas) {
+        return is >> taskas.x >> taskas.y;
+    }
 };
-
-double Taskas::operator-(const Taskas& t) {
-	return sqrt(pow(x-t.x, 2) + pow(y-t.y, 2));
-}
 
 class Staciakampis {
-	Taskas t[4];
-	double atk[2];
-	double s;
-	double p;
+public:
+    typedef std::array<Taskas, 4> Taskai;
 
-public:	
-	Staciakampis(Taskas[4]);
-	double perimetras();
-	double plotas();
+private:
+    std::array<double, 2> atkarpos_{};
+    Taskai taskai_;
+
+    std::array<double, 2> skaiciuotiAtkarpas() const {
+        std::array<double, 2> atkarpos{};
+
+        // Apskaičiuoja atkarpas iš taškų
+        for (int i = 1; i < 4; ++i) {
+            if (taskai_[i].x == taskai_[0].x) {
+                atkarpos[0] = taskai_[0] - taskai_[i];
+            } else if (taskai_[i].y == taskai_[0].y) {
+                atkarpos[1] = taskai_[0] - taskai_[i];
+            }
+        }
+
+        return atkarpos;
+    }
+
+public:
+    explicit Staciakampis(Taskai taskai) : taskai_(taskai) {
+        atkarpos_ = skaiciuotiAtkarpas();
+    }
+
+    inline double gautiPerimetra() {
+        return (atkarpos_[0] + atkarpos_[1]) * 2;
+    };
+
+    inline double gautiPlota() {
+        return atkarpos_[0] * atkarpos_[1];
+    };
 };
 
-// Netikrina ar iš tikrujų yra stačiakampis
-// Ima kad 4 taškai iš tiesų sudaro stačiakampį
-// Todėl 4 taškas nebūtinas
-Staciakampis::Staciakampis(Taskas nt[4]) {
-	for (int i = 0; i < 4; ++i) {
-		t[i] = nt[i];
-	}
-	for (int i = 1; i < 4; ++i) {
-		if (t[i].x == t[0].x) {
-			atk[0] = t[0] - t[i];
-		} else if (t[i].y == t[0].y) {
-			atk[1] = t[0] - t[i];
-		}
-	}
-}
-
-double Staciakampis::perimetras() {
-	return (atk[0] + atk[1]) * 2;
-}
-
-double Staciakampis::plotas() {
-	return atk[0] * atk[1];
-}
-
 int main() {
-	Taskas t[4];
+    Staciakampis::Taskai taskai{};
 
-	for (int i = 1; i <= 4; ++i) {
-		std::cout << "Įveskite " << i << " taško koordinates (x y): " << std::endl;
-		std::cin >> t[i-1].x >> t[i-1].y;
-	}
+    for (int i = 1; i <= 4; ++i) {
+        std::cout << "Įveskite " << i << " taško koordinates (x y): " << std::endl;
+        std::cin >> taskai[i - 1];
+    }
 
-	Staciakampis st(t);
+    Staciakampis staciakampis(taskai);
 
-	std::cout << "Stačiakampio perimetras: " << st.perimetras() << std::endl;
-	std::cout << "Stačiakampio plotas: " << st.plotas() << std::endl;
+    std::cout << "Stačiakampio perimetras: " << staciakampis.gautiPerimetra() << std::endl;
+    std::cout << "Stačiakampio plotas: " << staciakampis.gautiPlota() << std::endl;
 
-	return 0;
+    return 0;
 }

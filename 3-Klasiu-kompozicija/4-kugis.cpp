@@ -1,10 +1,12 @@
 #include <iostream>
-#include <cmath> // sqrt
-#define POW_2(x) (x*x)
+#include <cmath>
+#include <array>
+
+#define POW_2(x) ((x)*(x))
 
 /*
 
-4 Užduotis:
+3.4 Užduotis:
  - Klasė taškas:
    - x
    - y
@@ -25,116 +27,92 @@
 
 class Taskas {
 public:
-	double x;
-	double y;
+    double x;
+    double y;
+
+    friend std::istream &operator>>(std::istream &is, Taskas &taskas) {
+        return is >> taskas.x >> taskas.y;
+    }
 };
 
 class Atkarpa {
-	double ats;
-	Taskas pradzia;
-	Taskas pabaiga;
+    std::array<Taskas, 2> taskai_;
+    double atstumas_;
 
-	void skaiciuotiAts() {
-		this->ats = sqrt(POW_2(pabaiga.x-pradzia.x)+POW_2(pabaiga.y-pradzia.y));
-	}
+    inline double skaiciuotiAtstuma() const {
+        return std::sqrt(POW_2(taskai_[1].x - taskai_[0].x) + POW_2(taskai_[1].y - taskai_[0].y));
+    }
 
 public:
-	void keistiPradziosTaska(Taskas pradzia) { 
-		this->pradzia = pradzia;
-		skaiciuotiAts();
-	}
-	Taskas gautiPradziosTaska() { return this->pradzia; }
+    explicit Atkarpa(std::array<Taskas, 2> taskai) : taskai_(taskai) {
+        atstumas_ = skaiciuotiAtstuma();
+    }
 
-	void keistiPabaigosTaska(Taskas pabaiga) { 
-		this->pabaiga = pabaiga;
-		skaiciuotiAts();
-	}
-	Taskas gautiPabaigosTaska() { return this->pabaiga; }
-
-	double gautiAts() { return this->ats; }
+    double gautiAtstuma() const {
+        return atstumas_;
+    }
 };
 
+
 class Skritulys {
-	Atkarpa r;
-	double s;
+    Atkarpa spindulys_;
+    double plotas_;
+
+    inline double skaiciuotiPlota() const {
+        return M_PI * POW_2(spindulys_.gautiAtstuma());
+    }
 
 public:
-	void keistiSpinduli(Atkarpa r) {
-		this->r = r;
-		this->s = M_PI*r.gautiAts()*r.gautiAts();
-	}
-	double gautiSpinduli() { return this->r.gautiAts(); }
-	double gautiPlota() { return this->s; } 
+    explicit Skritulys(Atkarpa spindulys) : spindulys_(spindulys) {
+        plotas_ = skaiciuotiPlota();
+    }
+
+    double gautiPlota() const {
+        return plotas_;
+    }
 };
 
 class Kugis {
-	Skritulys pagr[2];
-	Atkarpa h;
-	double v;
+    std::array<Skritulys, 2> pagrindai_;
+    Atkarpa aukstis_;
+    double turis_;
 
-	void skaiciuotiTuri() {
-		this->v = (pagr[0].gautiPlota() 
-	        	  + sqrt(pagr[0].gautiPlota() * pagr[1].gautiPlota()) 
-	         	  + pagr[1].gautiPlota()) / 3 * this->h.gautiAts();
-	}
+    inline double skaiciuotiTuri() {
+        return (pagrindai_[0].gautiPlota()
+                + std::sqrt(pagrindai_[0].gautiPlota() * pagrindai_[1].gautiPlota())
+                + pagrindai_[1].gautiPlota()) / 3 * aukstis_.gautiAtstuma();
+    }
 
 public:
-	double gautiTuri() { return this->v; }
+    Kugis(std::array<Skritulys, 2> pagrindai, Atkarpa aukstis) : pagrindai_(pagrindai), aukstis_(aukstis) {
+        turis_ = skaiciuotiTuri();
+    }
 
-	void keisti1PagrSpinduli(Atkarpa r) { 
-		this->pagr[0].keistiSpinduli(r);
-		skaiciuotiTuri();
-	}
-	Skritulys gauti1Pagr() { return this->pagr[0]; }
-
-	void keisti2PagrSpinduli(Atkarpa r) {
-		this->pagr[1].keistiSpinduli(r);
-		skaiciuotiTuri();
-	};
-	Skritulys gauti2Pagr() { return this->pagr[1]; }
-
-	void keistiAukstine(Atkarpa h) { 
-		this->h = h;
-		skaiciuotiTuri();
-	}
-	Atkarpa gautiAukstine() { return this->h; }
-	
+    double gautiTuri() const {
+        return turis_;
+    }
 };
 
+inline Atkarpa gautiAtkarpa(const char *kieno) {
+    std::array<Taskas, 2> taskai{};
+
+    std::cout << kieno << " pradžios koordinatė (x y): ";
+    std::cin >> taskai[0];
+
+    std::cout << kieno << " pabaigos koordinatė (x y): ";
+    std::cin >> taskai[1];
+
+    return Atkarpa(taskai);
+}
+
 int main() {
-	Atkarpa r1, r2, h;
-	Taskas taskas;
-	double x, y;
+    Atkarpa spindulys1 = gautiAtkarpa("1 pagrindo spindulio");
+    Atkarpa spindulys2 = gautiAtkarpa("2 pagrindo spindulio");
+    Atkarpa aukstine = gautiAtkarpa("Aukštinės");
 
-	Kugis kugis;
+    Kugis kugis({Skritulys(spindulys1), Skritulys(spindulys2)}, aukstine);
 
-	std::cout << "1 pagrindo spindulio pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r1.keistiPradziosTaska(taskas);
-	
-	std::cout << "1 pagrindo spindulio pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r1.keistiPabaigosTaska(taskas);
+    std::cout << "Kūgio tūris: " << kugis.gautiTuri() << std::endl;
 
-	std::cout << "2 pagrindo spindulio pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r2.keistiPradziosTaska(taskas);
-	
-	std::cout << "2 pagrindo spindulio pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	r2.keistiPabaigosTaska(taskas);
-
-	std::cout << "Aukštinės pradžios koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	h.keistiPradziosTaska(taskas);
-	
-	std::cout << "Aukštinės pabaigos koordinatė (x y): ";
-	std::cin >> taskas.x >> taskas.y;
-	h.keistiPabaigosTaska(taskas);
-
-	kugis.keisti1PagrSpinduli(r1);
-	kugis.keisti2PagrSpinduli(r2);
-	kugis.keistiAukstine(h);
-
-	std::cout << "Kūgio plotas: " << kugis.gautiTuri() << std::endl;
+    return 0;
 }
