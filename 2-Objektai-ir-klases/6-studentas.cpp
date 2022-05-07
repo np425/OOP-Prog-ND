@@ -33,21 +33,22 @@ class Studentas {
     Dalykai dalykai_;
     double vidurkis_;
 
-public:
-    Studentas(std::string vardas, std::string pavarde, Dalykai dalykai) : vardas_(
-        std::move(vardas)), pavarde_(std::move(pavarde)), dalykai_(dalykai), vidurkis_(gautiSemestroVid()) {
-    }
-
-    double gautiSemestroVid() {
+    inline double skaiciuotiVidurki() {
         double vid = 0;
         double kredSum = 0;
 
-        for (int i = 0; i < DALYKU_SK; ++i) {
+        for (unsigned i = 0; i < DALYKU_SK; ++i) {
             vid += dalykai_[i].kreditai * dalykai_[i].pazymis;
             kredSum += dalykai_[i].kreditai;
         }
 
         return vid / kredSum;
+    }
+
+public:
+    Studentas(std::string vardas, std::string pavarde, Dalykai dalykai)
+        : vardas_(std::move(vardas)), pavarde_(std::move(pavarde)), dalykai_(dalykai) {
+        vidurkis_ = skaiciuotiVidurki();
     }
 
     void spausdinti() {
@@ -83,13 +84,13 @@ int main() {
     std::cin >> pavarde;
 
     std::cout << "Įveskite " << DALYKU_SK << " kreditus (atskirtais tarpais)" << std::endl;
-    for (int i = 0; i < DALYKU_SK; ++i) {
-        std::cin >> dalykai[i].kreditai;
+    for (Dalykas &dalykas: dalykai) {
+        std::cin >> dalykas.kreditai;
     }
 
     std::cout << "Įveskite " << DALYKU_SK << " pažymius (atskirtais tarpais)" << std::endl;
-    for (int i = 0; i < DALYKU_SK; ++i) {
-        std::cin >> dalykai[i].pazymis;
+    for (Dalykas &dalykas: dalykai) {
+        std::cin >> dalykas.pazymis;
     }
 
     Studentas studentas(vardas, pavarde, dalykai);

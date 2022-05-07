@@ -29,8 +29,8 @@ public:
     }
 };
 
-template <class T>
-void gautiReiksme(T& reiksme) {
+template<class T>
+void gautiReiksme(T &reiksme) {
     while (true) {
         std::cin >> reiksme;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

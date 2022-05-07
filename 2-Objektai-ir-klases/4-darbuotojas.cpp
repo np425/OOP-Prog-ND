@@ -25,13 +25,16 @@ private:
     unsigned amzius_;
     unsigned darboPatirtis_;
     unsigned atlyginimas_;
-    double mokesciai_{};
+    double mokesciai_;
+
+    inline double skaiciuotiMokescius() const {
+        return atlyginimas_ * (SODRA + MOKESCIAI);
+    }
 
 public:
     Darbuotojas(unsigned amzius, unsigned darboPatirtis, unsigned atlyginimas) : amzius_(amzius),
-                                                                                 darboPatirtis_(darboPatirtis),
-                                                                                 atlyginimas_(atlyginimas) {
-        skaiciuotiMokescius();
+        darboPatirtis_(darboPatirtis), atlyginimas_(atlyginimas) {
+        mokesciai_ = skaiciuotiMokescius();
     }
 
     void spausdintiDuomenis() const {
@@ -39,10 +42,6 @@ public:
         std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
         std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
         spausdintiMokescius();
-    }
-
-    double skaiciuotiMokescius() {
-        return this->mokesciai_ = atlyginimas_ * (SODRA + MOKESCIAI);
     }
 
     void spausdintiMokescius() const {

@@ -25,15 +25,15 @@ public:
     }
 
     void keistiAmziu(unsigned amzius) {
-        this->amzius_ = amzius;
+        amzius_ = amzius;
     }
 
     void keistiDarboPatirti(unsigned patirtis) {
-        this->darboPatirtis_ = patirtis;
+        darboPatirtis_ = patirtis;
     }
 
     void keistiAtlyginima(unsigned atlyginimas) {
-        this->atlyginimas_ = atlyginimas;
+        atlyginimas_ = atlyginimas;
     }
 };
 

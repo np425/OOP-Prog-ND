@@ -14,14 +14,14 @@
 
 class Darbuotojas {
 public:
-    unsigned amzius_;
-    unsigned darboPatirtis_;
-    unsigned atlyginimas_;
+    unsigned amzius;
+    unsigned darboPatirtis;
+    unsigned atlyginimas;
 
     void spausdintiDuomenis() const {
-        std::cout << "Amžius: " << amzius_ << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
-        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
+        std::cout << "Amžius: " << amzius << std::endl;
+        std::cout << "Darbo patirtis: " << darboPatirtis << std::endl;
+        std::cout << "Atlyginimas: " << atlyginimas << std::endl;
     }
 };
 
@@ -29,13 +29,13 @@ int main() {
     Darbuotojas darb{};
 
     std::cout << "Amžius: ";
-    std::cin >> darb.amzius_;
+    std::cin >> darb.amzius;
 
     std::cout << "Darbo patirtis: ";
-    std::cin >> darb.darboPatirtis_;
+    std::cin >> darb.darboPatirtis;
 
     std::cout << "Atlyginimas: ";
-    std::cin >> darb.atlyginimas_;
+    std::cin >> darb.atlyginimas;
 
     darb.spausdintiDuomenis();
 

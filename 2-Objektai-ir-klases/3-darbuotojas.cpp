@@ -64,8 +64,10 @@ int main() {
 
     std::cout << "Amžius: ";
     std::cin >> amzius;
+
     std::cout << "Darbo patirtis: ";
     std::cin >> darboPatirtis;
+
     std::cout << "Atlyginimas: ";
     std::cin >> atlyginimas;
 
