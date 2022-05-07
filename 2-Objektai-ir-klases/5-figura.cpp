@@ -1,8 +1,9 @@
 #include <iostream>
+#include <limits>
 
 /*
 
-5 Užduotis:
+2.5 Užduotis:
  - Klasė GeometrineFigura:
    - kraštinių skaičius
    - taisyklingumas
@@ -12,37 +13,56 @@
 */
 
 class GeometrineFigura {
-    unsigned krastSk;
-    bool taisyklingumas;
+    unsigned krastSk_;
+    bool taisyklingumas_;
 
 public:
-    GeometrineFigura() {}
-    GeometrineFigura(unsigned krastSk, bool taisyklingumas) : krastSk(krastSk), taisyklingumas(taisyklingumas) {}
+    GeometrineFigura(unsigned krastSk, bool taisyklingumas) : krastSk_(krastSk), taisyklingumas_(taisyklingumas) {
+    }
 
-    unsigned gautiKrastSk() { return krastSk; }
-    void keistiKrastSk(unsigned krastSk) { this->krastSk = krastSk; }
+    unsigned gautiKrastSk() const {
+        return krastSk_;
+    }
 
-    unsigned gautiTaisyklinguma() { return taisyklingumas; }
-    void keistiTaisyklinguma(unsigned taisyklingumas) { this->taisyklingumas = taisyklingumas; }
-
+    unsigned gautiTaisyklinguma() const {
+        return taisyklingumas_;
+    }
 };
+
+template <class T>
+void gautiReiksme(T& reiksme) {
+    while (true) {
+        std::cin >> reiksme;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (std::cin) {
+            break;
+        }
+
+        std::cin.clear();
+        std::cout << "Nesupratau ką ivedėte, prašau įvesti dar kartą." << std::endl;
+    }
+}
 
 int main() {
     unsigned krastSk;
-    char tais;
+    char taisyklingumas;
 
     std::cout << "Įveskite figūros kraštinių skaičių: ";
-    std::cin >> krastSk;
+    gautiReiksme(krastSk);
 
     while (true) {
         std::cout << "Įveskite figūros taisyklingumą (t/n): ";
-        std::cin >> tais;
+        gautiReiksme(taisyklingumas);
 
-        if (tais == 't' || tais == 'n') break;
+        if (taisyklingumas == 't' || taisyklingumas == 'n') {
+            break;
+        }
+
         std::cout << "Nesupratau ką ivedėte, prašau įvesti dar kartą." << std::endl;
     }
 
-    GeometrineFigura fig(krastSk, tais=='t');
+    GeometrineFigura fig(krastSk, taisyklingumas == 't');
 
     std::cout << "Kraštinių skaičius: " << fig.gautiKrastSk() << std::endl;
     std::cout << "Taisyklingumas: " << (fig.gautiTaisyklinguma() ? "taip" : "ne") << std::endl;

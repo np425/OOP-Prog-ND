@@ -1,12 +1,11 @@
 #include <iostream>
-#include <string.h>
-
-#define VARDO_ILGIS 100
-#define KREDITU_SK 6
+#include <string>
+#include <array>
+#include <utility>
 
 /*
 
-5 Užduotis:
+2.6 Užduotis:
  - Klasė Studentas:
    - vardas
    - pavardė
@@ -19,98 +18,83 @@
  - Atspausdina duomenis su vidurkiu
 */
 
+constexpr unsigned DALYKU_SK = 6;
+
+struct Dalykas {
+    unsigned kreditai;
+    unsigned pazymis;
+};
+
+typedef std::array<Dalykas, DALYKU_SK> Dalykai;
+
 class Studentas {
-	char vardas[VARDO_ILGIS];
-	char pavarde[VARDO_ILGIS];
-	unsigned kred[KREDITU_SK];
-	unsigned paz[KREDITU_SK];
+    std::string vardas_;
+    std::string pavarde_;
+    Dalykai dalykai_;
+    double vidurkis_;
 
 public:
-	double gautiSemestroVid() {
-		double vid = 0;
-		double kredSum = 0;
+    Studentas(std::string vardas, std::string pavarde, Dalykai dalykai) : vardas_(
+        std::move(vardas)), pavarde_(std::move(pavarde)), dalykai_(dalykai), vidurkis_(gautiSemestroVid()) {
+    }
 
-		for (int i = 0; i < KREDITU_SK; ++i) {
-			vid += kred[i] * paz[i];
-			kredSum += kred[i];
-		}
+    double gautiSemestroVid() {
+        double vid = 0;
+        double kredSum = 0;
 
-		return vid / kredSum;
-	}
+        for (int i = 0; i < DALYKU_SK; ++i) {
+            vid += dalykai_[i].kreditai * dalykai_[i].pazymis;
+            kredSum += dalykai_[i].kreditai;
+        }
 
-	const char* gautiVarda() const { return vardas; }
-	void keistiVarda(const char* vard) { 
-		strcpy(vardas, vard);
-	}
+        return vid / kredSum;
+    }
 
-	const char* gautiPavarde() const { return pavarde; }
-	void keistiPavarde(const char* vard) { 
-		strcpy(pavarde, vard);
-	}
+    void spausdinti() {
+        std::cout << "Dalykų skaičius: " << DALYKU_SK << std::endl;
+        std::cout << "Vardas: " << vardas_ << std::endl;
+        std::cout << "Pavardė: " << pavarde_ << std::endl;
 
-	const unsigned* gautiKred() const { return kred; }
-	void keistiKred(const unsigned* nauj) { 
-		memcpy(kred, nauj, sizeof(*kred)*KREDITU_SK);
-	}
+        std::cout << "Kreditai: ";
+        for (const Dalykas &dalykas: dalykai_) {
+            std::cout << dalykas.kreditai << " ";
+        }
+        std::cout << std::endl;
 
-	const unsigned* gautiPaz() const { return paz; }
-	void keistiPaz(const unsigned* nauj) { 
-		memcpy(paz, nauj, sizeof(*paz)*KREDITU_SK);
-	}
+        std::cout << "Įvertinimai: ";
+        for (const Dalykas &dalykas: dalykai_) {
+            std::cout << dalykas.pazymis << " ";
+        }
+        std::cout << std::endl;
 
-	void spausdinti() {
-		std::cout << "Kreditų skaičius: " << KREDITU_SK << std::endl;
-		std::cout << "Vardas: " << vardas << std::endl;
-		std::cout << "Pavardė: " << pavarde << std::endl;
-
-		std::cout << "Kreditai: ";
-		for (int i = 0; i < KREDITU_SK; ++i) {
-			std::cout << kred[i] << " "; 
-		}
-		std::cout << std::endl; 
-
-		std::cout << "Įvertinimai: ";
-		for (int i = 0; i < KREDITU_SK; ++i) {
-			std::cout << paz[i] << " "; 
-		}
-		std::cout << std::endl; 
-
-		std::cout << "Vidurkis: " << this->gautiSemestroVid() << std::endl;
-	}
+        std::cout << "Vidurkis: " << vidurkis_ << std::endl;
+    }
 };
 
 int main() {
-	char vard[VARDO_ILGIS];
-	char pav[VARDO_ILGIS];
-	unsigned kred[KREDITU_SK];
-	unsigned paz[KREDITU_SK];
-	Studentas stud;
+    std::string vardas;
+    std::string pavarde;
+    Dalykai dalykai;
 
-	std::cout << "Įveskite vardą:" << std::endl;
-	std::cin >> vard;
+    std::cout << "Įveskite vardą:" << std::endl;
+    std::cin >> vardas;
 
-	std::cout << "Įveskite pavardę:" << std::endl;
-	std::cin >> pav;
+    std::cout << "Įveskite pavardę:" << std::endl;
+    std::cin >> pavarde;
 
-	std::cout << "Įveskite " << KREDITU_SK << " kreditus (atskirtais tarpais)" << std::endl;
-	for (int i = 0; i < KREDITU_SK; ++i) {
-		std::cin >> kred[i];
-	}
+    std::cout << "Įveskite " << DALYKU_SK << " kreditus (atskirtais tarpais)" << std::endl;
+    for (int i = 0; i < DALYKU_SK; ++i) {
+        std::cin >> dalykai[i].kreditai;
+    }
 
-	std::cout << "Įveskite " << KREDITU_SK << " pažymius (atskirtais tarpais)" << std::endl;
-	for (int i = 0; i < KREDITU_SK; ++i) {
-		std::cin >> paz[i];
-	}
+    std::cout << "Įveskite " << DALYKU_SK << " pažymius (atskirtais tarpais)" << std::endl;
+    for (int i = 0; i < DALYKU_SK; ++i) {
+        std::cin >> dalykai[i].pazymis;
+    }
 
-	//std::cout << vard << std::endl;
-	//std::cout << pav << std::endl;
+    Studentas studentas(vardas, pavarde, dalykai);
 
-	stud.keistiVarda(vard);
-	stud.keistiPavarde(pav);
-	stud.keistiKred(kred);
-	stud.keistiPaz(paz);
-
-	stud.spausdinti();
+    studentas.spausdinti();
 
     return 0;
 }

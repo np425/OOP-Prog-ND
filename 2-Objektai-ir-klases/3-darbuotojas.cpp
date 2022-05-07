@@ -2,7 +2,7 @@
 
 /*
 
-3 Užduotis:
+2.3 Užduotis:
  - Klasė darbuotojas, su privačiais duomenimis:
    - amžius
    - darbo patirtis
@@ -16,65 +16,65 @@
 */
 
 class Darbuotojas {
-private:
-	unsigned amzius;
-	unsigned darboPatirtis;
-	unsigned atlyginimas;
-	double mokesciai;
-
-	constexpr static double SODRA = 0.09;
-	constexpr static double MOKESCIAI = 0.15;
-
-	//Darbuotojas(unsigned amzius, unsigned darboPatirtis, unsigned atlyginimas) {
-	//	this->amzius = amzius;
-	//	this->darboPatirtis = darboPatirtis;
-	//	this->atlyginimas = atlyginimas;
-	//}
-	
 public:
-	void spausdintiDuomenis() {
-		std::cout << "Amžius: " << amzius << std::endl;
-		std::cout << "Darbo patirtis: " << darboPatirtis << std::endl;
-		std::cout << "Atlyginimas: " << atlyginimas << std::endl;
-		spausdintiMokescius();
-	}
+    constexpr static double SODRA = 0.09;
+    constexpr static double MOKESCIAI = 0.15;
 
-	unsigned gautiAmziu() { return this->amzius; }
-	void keistiAmziu(unsigned amzius) { this->amzius = amzius; }
+private:
+    unsigned amzius_;
+    unsigned darboPatirtis_;
+    unsigned atlyginimas_;
+    double mokesciai_;
 
-	unsigned gautiDarboPatirti() { return this->darboPatirtis; }
-	void keistiDarboPatirti(unsigned patirtis) { this->darboPatirtis = patirtis; }
+public:
+    void spausdintiDuomenis() const {
+        std::cout << "Amžius: " << amzius_ << std::endl;
+        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
+        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
+        spausdintiMokescius();
+    }
 
-	unsigned gautiAtlyginima() { return this->atlyginimas; }
-	void keistiAtlyginima(unsigned atlyginimas) { this->atlyginimas = atlyginimas; }
+    void keistiAmziu(unsigned amzius) {
+        this->amzius_ = amzius;
+    }
 
-	double skaiciuotiMokescius() { return this->mokesciai = atlyginimas * (SODRA+MOKESCIAI); }
-	void spausdintiMokescius() { 
-		std::cout << "Mokesčiai: " << this->mokesciai << std::endl; 
-	}
+    void keistiDarboPatirti(unsigned patirtis) {
+        this->darboPatirtis_ = patirtis;
+    }
+
+    void keistiAtlyginima(unsigned atlyginimas) {
+        this->atlyginimas_ = atlyginimas;
+    }
+
+    double skaiciuotiMokescius() {
+        return this->mokesciai_ = atlyginimas_ * (SODRA + MOKESCIAI);
+    }
+
+    void spausdintiMokescius() const {
+        std::cout << "Mokesčiai: " << this->mokesciai_ << std::endl;
+    }
 };
 
 int main() {
-	Darbuotojas darb;
+    Darbuotojas darb{};
 
-	unsigned amzius;
-	unsigned darboPatirtis;
-	unsigned atlyginimas;
+    unsigned amzius;
+    unsigned darboPatirtis;
+    unsigned atlyginimas;
 
-	std::cout << "Amžius: ";
-	std::cin >> amzius;
-	std::cout << "Darbo patirtis: ";
-	std::cin >> darboPatirtis;
-	std::cout << "Atlyginimas: ";
-	std::cin >> atlyginimas;
+    std::cout << "Amžius: ";
+    std::cin >> amzius;
+    std::cout << "Darbo patirtis: ";
+    std::cin >> darboPatirtis;
+    std::cout << "Atlyginimas: ";
+    std::cin >> atlyginimas;
 
-	darb.keistiAmziu(amzius);
-	darb.keistiDarboPatirti(darboPatirtis);
-	darb.keistiAtlyginima(atlyginimas);
+    darb.keistiAmziu(amzius);
+    darb.keistiDarboPatirti(darboPatirtis);
+    darb.keistiAtlyginima(atlyginimas);
 
-	darb.skaiciuotiMokescius();
+    darb.skaiciuotiMokescius();
+    darb.spausdintiDuomenis();
 
-	darb.spausdintiDuomenis();
-
-	return 0;
+    return 0;
 }
