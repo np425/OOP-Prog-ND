@@ -1,11 +1,14 @@
 #include <iostream>
-#include <iomanip> // std::left, set::setw
-#include <cstring> // std::strcpy
-#define PAV_DYDIS 30
+#include <iomanip>
+#include <string>
+#include <utility>
+#include <vector>
+
+#define LINE "----------------------------------"
 
 /*
 
-3 Užduotis:
+5.3 Užduotis:
  - Klasė prekės:
    - pavadinimas
    - kiekis
@@ -25,84 +28,104 @@
 
 class Prekes {
 protected:
-	char pav[PAV_DYDIS];
-	unsigned kiekis;
-	double vntKaina;
+    std::string pavadinimas_;
+    unsigned kiekis_;
+    double vntKaina_;
 
 public:
-	Prekes(char* pav, unsigned kiekis, double vntKaina) : kiekis(kiekis), vntKaina(vntKaina) {
-		strcpy(this->pav, pav);
-	}
+    Prekes(std::string pavadinimas, unsigned kiekis, double vntKaina) : pavadinimas_(std::move(pavadinimas)),
+        kiekis_(kiekis), vntKaina_(vntKaina) {
+    }
 
-	const char* gautiPav() { return pav; }
-	virtual double visoKaina() { return kiekis*vntKaina; }
+    std::string gautiPavadinima() const {
+        return pavadinimas_;
+    }
+
+    virtual double gautiVisoKaina() const {
+        return kiekis_ * vntKaina_;
+    }
 };
 
 class Prekes_su_nuolaida : public Prekes {
-	double nuolaida;
+    double nuolaida_;
 
 public:
-	Prekes_su_nuolaida(char* pav, unsigned kiekis, double vntKaina, double nuolaida)
-	      : Prekes(pav, kiekis, vntKaina), nuolaida(nuolaida) {}
-	
-	virtual double visoKaina() { return kiekis*vntKaina*(1-nuolaida); }
+    Prekes_su_nuolaida(std::string pavadinimas, unsigned kiekis, double vntKaina, double nuolaida)
+        : Prekes(std::move(pavadinimas), kiekis, vntKaina), nuolaida_(nuolaida) {
+    }
+
+    double gautiVisoKaina() const override {
+        return kiekis_ * vntKaina_ * (1 - nuolaida_);
+    }
 };
 
+bool prekeTuriNuolaida() {
+    while (true) {
+        char atsakymas;
+
+        std::cout << "Ar turi nuolaidą? t arba n: ";
+        std::cin >> atsakymas;
+
+        if (atsakymas == 't') {
+            return true;
+        } else if (atsakymas == 'n') {
+            return false;
+        }
+
+        std::cout << "Nesupratau, prašome pakartoti įvėdimą." << std::endl;
+    }
+}
+
+void gautiPrekes(std::vector<std::unique_ptr<Prekes>> &prekes) {
+    for (unsigned i = 0; i < prekes.size(); ++i) {
+        std::string pavadinimas;
+        unsigned vntKiekis;
+        double vntKaina;
+
+        std::cout << "Įveskite " << i + 1 << " prekės pavadinimą: ";
+        std::cin >> pavadinimas;
+
+        std::cout << "Įveskite vienetų kiekį: ";
+        std::cin >> vntKiekis;
+
+        std::cout << "Įveskite vieneto kainą: ";
+        std::cin >> vntKaina;
+
+        if (!prekeTuriNuolaida()) {
+            prekes[i] = std::make_unique<Prekes>(pavadinimas, vntKiekis, vntKaina);
+            continue;
+        }
+
+        double nuolaida;
+
+        std::cout << "Įveskite nuolaidos procento dalį: ";
+        std::cin >> nuolaida;
+
+        prekes[i] = std::make_unique<Prekes_su_nuolaida>(pavadinimas, vntKiekis, vntKaina, nuolaida);
+    }
+}
+
 int main() {
-	Prekes** prekes;
-	char pav[PAV_DYDIS];
-	char ats;
-	unsigned n, kiekis;
-	double kaina, nuolaida, visoKaina=0;
+    unsigned prekiuKiekis;
+    double visuPrekiuKaina;
 
-	std::cout << "Įveskite skirtingų prekių kiekį: ";
-	std::cin >> n;
+    std::cout << "Įveskite skirtingų prekių kiekį: ";
+    std::cin >> prekiuKiekis;
 
-	prekes = new Prekes*[n];
+    std::vector<std::unique_ptr<Prekes>> prekes(prekiuKiekis);
 
-	for (unsigned i = 0; i < n; ++i) {
-		std::cout << "Įveskite " << i+1 << " prekės pavadinimą: ";
-		std::cin >> pav;
+    gautiPrekes(prekes);
 
-		std::cout << "Įveskite vienetų kiekį: ";
-		std::cin >> kiekis;
+    for (const auto &preke: prekes) {
+        double prekesKaina = preke->gautiVisoKaina();
 
-		std::cout << "Įveskite vieneto kainą: ";
-		std::cin >> kaina;
+        visuPrekiuKaina += prekesKaina;
 
-		while (true) {
-			std::cout << "Ar turi nuolaidą? t arba n: ";
-			std::cin >> ats;
+        std::cout << std::left << std::setw(25) << preke->gautiPavadinima() << prekesKaina << std::endl;
+    }
 
-			if (ats == 't') {
-				std::cout << "Įveskite nuolaidos procento dalį: ";
-				std::cin >> nuolaida;
-				prekes[i] = new Prekes_su_nuolaida(pav, kiekis, kaina, nuolaida);
-			} else if (ats == 'n') {
-				prekes[i] = new Prekes(pav, kiekis, kaina);
-			} else {
-				std::cout << "Nesupratau, prašome pakartoti įvėdimą." << std::endl;
-				continue;
-			}
+    std::cout << LINE << std::endl;
+    std::cout << std::left << std::setw(25) << "Visų prekių kaina" << visuPrekiuKaina << std::endl;
 
-			break;
-		}
-	}
-	
-	for (unsigned i = 0; i < n; ++i) {
-		kaina = prekes[i]->visoKaina();
-		visoKaina += kaina;
-
-		std::cout << std::left << std::setw(25) << prekes[i]->gautiPav() << kaina << std::endl;
-	}
-	std::cout << "-------------------------" << std::endl;
-	std::cout << std::left << std::setw(25) << "Visų prekių kaina" << visoKaina << std::endl;
-
-	for (unsigned i = 0; i < n; ++i) {
-		delete prekes[i];
-	}
-
-	delete[] prekes;
-
-	return 0;
+    return 0;
 }

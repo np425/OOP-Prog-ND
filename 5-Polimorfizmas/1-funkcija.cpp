@@ -1,9 +1,11 @@
-#include <iostream> 
-#include <cmath> // pow
+#include <iostream>
+#include <cmath>
+#include <array>
+#include <memory>
 
 /*
 
-1 Užduotis:
+5.1 Užduotis:
  - Klasė Funkcija (abstrakti):
    - f(x) (abstraktus metodas)
  - Klasė Laipsninė funkcija (kilus iš klasės funkcija):
@@ -20,68 +22,81 @@
 
 class Funkcija {
 public:
-	virtual double f(double x) = 0;
-
-	virtual const char* pav() = 0;
+    virtual double operator()(double x) const = 0;
+    virtual const char *gautiPavadinima() const = 0;
+    virtual ~Funkcija() = default;
 };
 
+// y = kx + b
 class TiesineFunkcija : public Funkcija {
-	double k;
-	double b;
+    double k_;
+    double b_;
 
 public:
-	TiesineFunkcija(double k, double b) : k(k), b(b) {}
+    TiesineFunkcija(double k, double b) : k_(k), b_(b) {
+    }
 
-	virtual double f(double x) { return k*x+b; }
-	
-	virtual const char* pav() { return "tiesinė"; }
+    double operator()(double x) const override {
+        return k_ * x + b_;
+    }
+
+    const char *gautiPavadinima() const override {
+        return "tiesinė";
+    }
 };
 
+// y = x^n
 class LaipsnineFunkcija : public Funkcija {
-	double n;
+    double n_;
 
 public:
-	LaipsnineFunkcija(double n) : n(n) {}
+    explicit LaipsnineFunkcija(double n) : n_(n) {
+    }
 
-	virtual double f(double x) { return pow(x, n); }
-	
-	virtual const char* pav() { return "laipsninė"; }
+    double operator()(double x) const override {
+        return std::pow(x, n_);
+    }
+
+    const char *gautiPavadinima() const override {
+        return "laipsninė";
+    }
 };
 
+// y = sin(x)
 class Sinusoide : public Funkcija {
 public:
-	virtual double f(double x) { return sin(x); }
-	
-	virtual const char* pav() { return "sinusoidė"; }
+    double operator()(double x) const override {
+        return std::sin(x);
+    }
+
+    const char *gautiPavadinima() const override {
+        return "sinusoidė";
+    }
 };
 
 int main() {
-	double k, b, n, x;
-	Funkcija* func[3];
+    double k, b, n, x;
+    std::cout << "Įveskite tiesinės funkcijos k kintamąjį: ";
+    std::cin >> k;
 
-	std::cout << "Įveskite tiesinės funkcijos k kintamąjį: ";
-	std::cin >> k;
+    std::cout << "Įveskite tiesinės funkcijos b kintamąjį: ";
+    std::cin >> b;
 
-	std::cout << "Įveskite tiesinės funkcijos b kintamąjį: ";
-	std::cin >> b;
+    std::cout << "Įveskite laipsninės funkcijos n kintamąjį: ";
+    std::cin >> n;
 
-	std::cout << "Įveskite laipsninės funkcijos n kintamąjį: ";
-	std::cin >> n;
-	
-	std::cout << "Įveskite x: ";
-	std::cin >> x;
-	
-	func[0] = new TiesineFunkcija(k, b);
-	func[1] = new LaipsnineFunkcija(n);
-	func[2] = new Sinusoide();
+    std::cout << "Įveskite x: ";
+    std::cin >> x;
 
-	for (int i = 0; i != 3; ++i) {
-		std::cout << func[i]->pav() << ": y=" << func[i]->f(x) << std::endl;
-	}
+    std::array<std::unique_ptr<Funkcija>, 3> funkcijos = {
+        std::make_unique<TiesineFunkcija>(k, b),
+        std::make_unique<LaipsnineFunkcija>(n),
+        std::make_unique<Sinusoide>()
+    };
 
-	for (int i = 0; i != 3; ++i) {
-		delete func[i];
-	}
+    for (const auto &funkcija: funkcijos) {
+        std::cout << funkcija->gautiPavadinima() << ": y=" << (*funkcija)(x) << std::endl;
+    }
 
-	return 0;
+    return 0;
 }

@@ -1,10 +1,13 @@
 #include <iostream>
-#include <cmath> // M_PI
-#define POW_2(x) (x*x)
+#include <cmath>
+#include <array>
+#include <memory>
+
+#define POW_2(x) ((x)*(x))
 
 /*
 
-2 Užduotis:
+5.2 Užduotis:
  - Klasė (abstrakti) geometrinė figūra:
    - plotas() (abstrakti funkcija)
  - Klasė stačiakampis (kilus iš klasės geometrinė figūra):
@@ -26,83 +29,92 @@
 
 class GeometrineFigura {
 public:
-	virtual double plotas() = 0;
+    virtual double gautiPlota() const = 0;
+    virtual const char *gautiPavadinima() const = 0;
 
-	virtual const char* pav() = 0;
+    virtual ~GeometrineFigura() = default;
 };
 
 class Staciakampis : public GeometrineFigura {
 protected:
-	double ilgis;
-	double plotis;
+    double ilgis_;
+    double plotis_;
 
 public:
-	virtual double plotas() {
-		return ilgis*plotis;
-	}
+    Staciakampis(double ilgis, double plotis) : ilgis_(ilgis), plotis_(plotis) {
+    }
 
-	Staciakampis(double ilgis, double plotis) : ilgis(ilgis), plotis(plotis) {}
+    double gautiPlota() const override {
+        return ilgis_ * plotis_;
+    }
 
-	virtual const char* pav() { return "stačiakampis"; }
+    const char *gautiPavadinima() const override {
+        return "stačiakampis";
+    }
 };
 
 class Trikampis : public GeometrineFigura {
 protected:
-	double pagrIlgis;
-	double aukstine;
+    double pagrIlgis_;
+    double aukstis_;
 
 public:
-	virtual double plotas() {
-		return pagrIlgis*aukstine/2;
-	}
+    double gautiPlota() const override {
+        return pagrIlgis_ * aukstis_ / 2;
+    }
 
-	Trikampis(double pagrIlgis, double aukstine) : pagrIlgis(pagrIlgis), aukstine(aukstine) {}
-	virtual const char* pav() { return "trikampis"; }
+    Trikampis(double pagrIlgis, double aukstis) : pagrIlgis_(pagrIlgis), aukstis_(aukstis) {
+    }
+
+    const char *gautiPavadinima() const override {
+        return "trikampis";
+    }
 };
 
 class Skritulys : public GeometrineFigura {
 protected:
-	double spindulys;
+    double spindulys_;
 
 public:
-	virtual double plotas() {
-		return M_PI*POW_2(spindulys);
-	}
+    explicit Skritulys(double spindulys) : spindulys_(spindulys) {
+    }
 
-	Skritulys(double spindulys) : spindulys(spindulys) {}
-	virtual const char* pav() { return "skritulys"; }
+    double gautiPlota() const override {
+        return M_PI * POW_2(spindulys_);
+    }
+
+    const char *gautiPavadinima() const override {
+        return "skritulys";
+    }
 };
 
 int main() {
-	double ilgis, plotis, pagrIlgis, aukstine, spindulys;
-	GeometrineFigura* fig[3];
+    double ilgis, plotis, pagrIlgis, aukstis, spindulys;
 
-	std::cout << "Įveskite stačiakampio ilgį: ";
-	std::cin >> ilgis;
+    std::cout << "Įveskite stačiakampio ilgį: ";
+    std::cin >> ilgis;
 
-	std::cout << "Įveskite stačiakampio plotį: ";
-	std::cin >> plotis;
+    std::cout << "Įveskite stačiakampio plotį: ";
+    std::cin >> plotis;
 
-	std::cout << "Įveskite trikampio pagrindo ilgį: ";
-	std::cin >> pagrIlgis;
+    std::cout << "Įveskite trikampio pagrindo ilgį: ";
+    std::cin >> pagrIlgis;
 
-	std::cout << "Įveskite trikampio aukštinę: ";
-	std::cin >> aukstine;
+    std::cout << "Įveskite trikampio aukštinės ilgį: ";
+    std::cin >> aukstis;
 
-	std::cout << "Įveskite apskritimo spindulį: ";
-	std::cin >> spindulys;
+    std::cout << "Įveskite apskritimo spindulį: ";
+    std::cin >> spindulys;
 
-	fig[0] = new Staciakampis(ilgis, plotis);
-	fig[1] = new Trikampis(pagrIlgis, aukstine);
-	fig[2] = new Skritulys(spindulys);
+    std::array<std::unique_ptr<GeometrineFigura>, 3> figuros = {
+        std::make_unique<Staciakampis>(ilgis, plotis),
+        std::make_unique<Trikampis>(pagrIlgis, aukstis),
+        std::make_unique<Skritulys>(spindulys)
+    };
 
-	for (int i = 0; i != 3; ++i) {
-		std::cout << fig[i]->pav() << ": S=" << fig[i]->plotas() << std::endl;
-	}
+    for (const auto &figura: figuros) {
+        std::cout << figura->gautiPavadinima() << ": plotas = " << figura->gautiPlota() << std::endl;
+    }
 
-	for (int i = 0; i != 3; ++i) {
-		delete fig[i];
-	}
-
-	return 0;
+    return 0;
 }
