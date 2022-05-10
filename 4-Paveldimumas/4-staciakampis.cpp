@@ -1,10 +1,10 @@
 #include <iostream>
-#include <cmath> // M_PI
+
 #define POW_2(x) (x*x)
 
 /*
 
-3 Užduotis:
+4.4 Užduotis:
  - Klasė geometrinė figūra:
    - perimentras (p)
    - plotas (s)
@@ -21,115 +21,99 @@
 
 class GeometrineFigura {
 protected:
-	double plotas;
-	double perimetras;
+    double plotas_{};
+    double perimetras_{};
 
 public:
-	virtual void skaiciuotiPlota() = 0;
-	virtual void skaiciuotiPerimetra() = 0;
+    virtual void skaiciuotiPlota() = 0;
+    virtual void skaiciuotiPerimetra() = 0;
 
-	virtual void perskaiciuoti() {
-		skaiciuotiPerimetra();
-		skaiciuotiPlota();
-	}
+    virtual void skaiciuotiDuomenis() {
+        skaiciuotiPlota();
+        skaiciuotiPerimetra();
+    };
 
-	double gautiPlota() { return this->plotas; }
-	double gautiPerimetra() { return this->perimetras; }
-
-	virtual void spausdinti() {
-		std::cout << "Plotas: " << plotas << std::endl;
-		std::cout << "Perimetras: " << perimetras << std::endl;
-	}
+    friend std::ostream &operator<<(std::ostream &os, const GeometrineFigura &figura) {
+        os << "Plotas: " << figura.plotas_ << std::endl;
+        os << "Perimetras: " << figura.perimetras_;
+        return os;
+    }
 };
 
 class Staciakampis : public GeometrineFigura {
 protected:
-	double ilgis;
-	double plotis;
+    double ilgis_;
+    double plotis_;
 
 public:
-	virtual void skaiciuotiPerimetra() {
-		perimetras = 2*(this->ilgis+this->plotis);
-	}
+    Staciakampis(double ilgis, double plotis) : GeometrineFigura(), ilgis_(ilgis), plotis_(plotis) {
+    }
 
-	virtual void skaiciuotiPlota() {
-		plotas = this->ilgis*this->plotis;
-	}
+    inline void skaiciuotiPerimetra() override {
+        perimetras_ = 2 * (ilgis_ + plotis_);
+    }
 
-	Staciakampis(double ilgis, double plotis) : GeometrineFigura() {
-		this->ilgis = ilgis;
-		this->plotis = plotis;
-	}
+    inline void skaiciuotiPlota() override {
+        plotas_ = ilgis_ * plotis_;
+    }
 
-	void keistiIlgi(double ilgis) { 
-		this->ilgis = ilgis;
-	}
-	double gautiIlgi() { return this->ilgis; }
-
-	void keistiPloti(double plotis) { 
-		this->plotis = plotis; 
-	}
-	double gautiPloti() { return this->plotis; }
-	
-	virtual void spausdinti() {
-		GeometrineFigura::spausdinti();
-		std::cout << "Ilgis: " << ilgis << std::endl;
-		std::cout << "Plotis: " << plotis << std::endl;
-	}
+    friend std::ostream &operator<<(std::ostream &os, const Staciakampis &staciakampis) {
+        os << (const GeometrineFigura &) staciakampis << std::endl;
+        os << "Ilgis: " << staciakampis.ilgis_ << std::endl;
+        os << "Plotis: " << staciakampis.plotis_;
+        return os;
+    }
 };
 
 class StaciakampisGretasienis : public Staciakampis {
 protected:
-	double aukstis;
-	double turis;
+    double aukstis_;
+    double turis_{};
 
 public:
-	virtual void skaiciuotiTuri() { 
-		this->turis = plotas*aukstis;
-	}
+    StaciakampisGretasienis(double ilgis, double plotis, double aukstis)
+        : Staciakampis(ilgis, plotis), aukstis_(aukstis) {
+    }
 
-	virtual void skaiciuotiPerimetra() {
-		Staciakampis::skaiciuotiPerimetra();
-		perimetras += 2*aukstis;
-	}
+    inline void skaiciuotiTuri() {
+        turis_ = plotas_ * aukstis_;
+    }
 
-	virtual void perskaiciuoti() {
-		Staciakampis::perskaiciuoti();
-		skaiciuotiTuri();
-	}
+    inline void skaiciuotiPerimetra() override {
+        Staciakampis::skaiciuotiPerimetra();
+        perimetras_ = perimetras_ * 2 + aukstis_ * 4;
+    }
 
-	StaciakampisGretasienis(double ilgis, double plotis, double aukstis)
-	                        : Staciakampis(ilgis, plotis) {
-		this->aukstis = aukstis;
-	}
+    void skaiciuotiDuomenis() override {
+        Staciakampis::skaiciuotiDuomenis();
+        skaiciuotiTuri();
+    }
 
-	void keistiAuksti(double aukstis) { this->aukstis = aukstis; }
-	double gautiAuksti() { return this->aukstis; }
-
-	double gautiTuri() { return this->turis; }
-	
-	virtual void spausdinti() {
-		Staciakampis::spausdinti();
-		std::cout << "Aukštis: " << aukstis << std::endl;
-		std::cout << "Tūris: " << turis << std::endl;
-	}
+    friend std::ostream &operator<<(std::ostream &os, const StaciakampisGretasienis &staciakampisGretasienis) {
+        os << (const Staciakampis &) staciakampisGretasienis << std::endl;
+        os << "Aukštis: " << staciakampisGretasienis.aukstis_ << std::endl;
+        os << "Tūris: " << staciakampisGretasienis.turis_;
+        return os;
+    }
 };
 
 int main() {
-	double ilgis, aukstis, plotis;
+    double ilgis, aukstis, plotis;
 
-	std::cout << "Įveskite ilgį: ";
-	std::cin >> ilgis;
+    std::cout << "Įveskite ilgį: ";
+    std::cin >> ilgis;
 
-	std::cout << "Įveskite plotį: ";
-	std::cin >> plotis;
+    std::cout << "Įveskite plotį: ";
+    std::cin >> plotis;
 
-	std::cout << "Įveskite aukštį: ";
-	std::cin >> aukstis;
+    std::cout << "Įveskite aukštį: ";
+    std::cin >> aukstis;
 
-	StaciakampisGretasienis stac(ilgis, plotis, aukstis);
-	stac.perskaiciuoti();
-	stac.spausdinti();
+    StaciakampisGretasienis staciakampisGretasienis(ilgis, plotis, aukstis);
 
-	return 0;
+    staciakampisGretasienis.skaiciuotiDuomenis();
+
+    std::cout << staciakampisGretasienis << std::endl;
+
+    return 0;
 }

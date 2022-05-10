@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
-#include <map>
-#include <iomanip>
+#include <utility>
+#include <vector>
+
+#define LINE "--------------------------"
 
 /*
 
-1 Užduotis:
+4.1 Užduotis:
  - Klasė asmuo:
    - vardas
    - pavardė
@@ -21,91 +23,83 @@
 */
 
 class Asmuo {
-	std::string vardas;
-	std::string pavarde;
-	unsigned amzius;
+    std::string vardas_;
+    std::string pavarde_;
+    unsigned amzius_;
 
 public:
-	std::string gautiVarda() { return vardas; }
-	std::string gautiPavarde() { return pavarde; }
-	unsigned gautiAmziu() { return amzius; }
-	
-	void keistiVarda(std::string _vardas) { vardas = _vardas; }
-	void keistiPavarde(std::string _pavarde) { pavarde = _pavarde; }
-	void keistiAmziu(unsigned _amzius) { amzius = _amzius; }
+    Asmuo(std::string vardas, std::string pavarde, unsigned amzius) : vardas_(std::move(vardas)),
+        pavarde_(std::move(pavarde)), amzius_(amzius) {
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const Asmuo &asmuo) {
+        return os << asmuo.vardas_ << " " << asmuo.pavarde_ << " (" << asmuo.amzius_ << ")";
+    }
 };
 
 class Studentas : public Asmuo {
-	unsigned id;
-	std::map<std::string, unsigned> dalykai;
-	double vidurkis;
-
-	void perskaiciuotiVidurki();
+    unsigned id_;
+    std::vector<std::string> dalykai_;
+    double vidurkis_;
 public:
-	std::map<std::string, unsigned>& gautiDalykus() { return dalykai; }
-	unsigned gautiID() { return id; }
-	double gautiVidurki() { return vidurkis; }
+    Studentas(std::string vardas, std::string pavarde, unsigned amzius, unsigned id, std::vector<std::string> dalykai,
+              double vidurkis) :
+        Asmuo(std::move(vardas), std::move(pavarde), amzius), id_(id),
+        dalykai_(std::move(dalykai)),
+        vidurkis_(vidurkis) {
+    }
 
-	void keistiID(unsigned _id) { id = _id; }
-	void pridetiDalyka(std::string, unsigned);
+    friend std::ostream &operator<<(std::ostream &os, const Studentas &studentas) {
+        os << (const Asmuo &) studentas << " ID = " << studentas.id_ << std::endl;
+        os << "Dalykai: " << std::endl;
+
+        for (const std::string &dalykas: studentas.dalykai_) {
+            os << "- " << dalykas << std::endl;
+        }
+
+        os << LINE << std::endl;
+
+        os << "Vidurkis: " << studentas.vidurkis_;
+        return os;
+    }
 };
 
-void Studentas::perskaiciuotiVidurki() {
-	vidurkis = 0;
-	for (auto it = dalykai.begin(); it != dalykai.end(); ++it) {
-		vidurkis += it->second;
-	}
-	vidurkis /= dalykai.size();
-}
-
-void Studentas::pridetiDalyka(std::string pav, unsigned paz) {
-	dalykai[pav] = paz;
-	perskaiciuotiVidurki();
-}
-
 int main() {
-	Studentas stud;
-	std::string vardas, pavarde;
-	unsigned amzius, id, n;
+    std::string vardas, pavarde;
+    unsigned amzius, id, dalykuKiekis;
+    double vidurkis;
 
-	std::cout << "Įveskite vardą: ";
-	std::cin >> vardas;
+    std::cout << "Įveskite vardą: ";
+    std::cin >> vardas;
 
-	std::cout << "Įveskite pavardę: ";
-	std::cin >> pavarde;
+    std::cout << "Įveskite pavardę: ";
+    std::cin >> pavarde;
 
-	std::cout << "Įveskite amžių: ";
-	std::cin >> amzius;
+    std::cout << "Įveskite amžių: ";
+    std::cin >> amzius;
 
-	std::cout << "Įveskite studento ID: ";
-	std::cin >> id;
+    std::cout << "Įveskite studento ID: ";
+    std::cin >> id;
 
-	std::cout << "Įveskite kiek dalykų yra: ";
-	std::cin >> n;
+    std::cout << "Įveskite dalykų kiekį: ";
+    std::cin >> dalykuKiekis;
 
-	stud.keistiVarda(vardas);
-	stud.keistiPavarde(pavarde);
-	stud.keistiAmziu(amzius);
-	stud.keistiID(id);
+    std::vector<std::string> dalykai(dalykuKiekis);
 
-	std::cout << "Įveskite " << n << " dalykų pavadinimus ir pažymius: " << std::endl;
-	for (unsigned i = 0; i < n; ++i) {
-		std::string pav;
-		unsigned paz;
+    for (unsigned i = 0; i < dalykuKiekis; ++i) {
+        std::cout << "Įveskite " << i + 1 << " dalyko pavadinimą: " << std::endl;
 
-		std::cin >> pav >> paz;
-		stud.pridetiDalyka(pav, paz);
-	}
+        std::string pav;
+        std::cin >> pav;
 
-	std::cout << stud.gautiVarda() << " " << stud.gautiPavarde() << " (" << stud.gautiAmziu() << ") ";
-	std::cout << "[" << stud.gautiID() << "]; dalykai: " << std::endl;
+        dalykai[i] = pav;
+    }
 
-	for (auto it = stud.gautiDalykus().begin(); it != stud.gautiDalykus().end(); ++it) {
-		std::cout << "- " << std::left << std::setw(17) << it->first << it->second << std::endl;
-	}
+    std::cout << "Įveskite dalykų vidurkį: ";
+    std::cin >> vidurkis;
 
-	std::cout << "--------------------------" << std::endl;
+    Studentas studentas(vardas, pavarde, amzius, id, dalykai, vidurkis);
+    std::cout << studentas << std::endl;
 
-	std::cout << "Vidurkis: " << stud.gautiVidurki() << std::endl;
-	return 0;
+    return 0;
 }

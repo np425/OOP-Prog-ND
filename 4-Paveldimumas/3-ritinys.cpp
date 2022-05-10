@@ -1,10 +1,11 @@
 #include <iostream>
-#include <cmath> // sqrt
-#define POW_2(x) (x*x)
+#include <cmath>
+
+#define POW_2(x) ((x)*(x))
 
 /*
 
-2 Užduotis:
+4.3 Užduotis:
  - Klasė skritulys:
    - spindulys
    - plotas
@@ -18,45 +19,50 @@
 
 class Skritulys {
 protected:
-	double r;
-	double s;
+    double spindulys_;
+    double plotas_;
+
+    inline double skaiciuotiPlota() {
+        return M_PI * POW_2(spindulys_);
+    }
 
 public:
-	void keistiSpinduli(double r) {
-		this->r = r;
-		this->s = M_PI*POW_2(r);
-	}
-	double gautiSpinduli() { return this->r; }
-
-	double gautiPlota() { return this->s; }
+    explicit Skritulys(double spindulys) : spindulys_(spindulys) {
+        plotas_ = skaiciuotiPlota();
+    }
 };
 
-class Ritinys: public Skritulys {
+class Ritinys : public Skritulys {
 protected:
-	double v;
-	double h;
+    double aukstis_;
+    double turis_;
+
+    inline double skaiciuotiTuri() {
+        return plotas_ * aukstis_;
+    }
 
 public:
-	void keistiAukstine(double h) {
-		this->h = h;
-		this->v = s*h;
-	}
-	double gautiTuri() { return this->v; }
-	double gautiPlota() { return 2*M_PI*r*(r+h); }
+    Ritinys(double spindulys, double aukstis) : Skritulys(spindulys), aukstis_(aukstis) {
+        turis_ = skaiciuotiTuri();
+    }
+
+    double gautiTuri() const {
+        return turis_;
+    }
 };
 
 int main() {
-	double r, h;
-	Ritinys rit;
+    double spindulys, aukstis;
 
-	std::cout << "Įveskite spindulio ilgį: ";
-	std::cin >> r;
+    std::cout << "Įveskite spindulio ilgį: ";
+    std::cin >> spindulys;
 
-	std::cout << "Įveskite aukštinės ilgį: ";
-	std::cin >> h;
+    std::cout << "Įveskite aukštinės ilgį: ";
+    std::cin >> aukstis;
 
-	rit.keistiSpinduli(r);
-	rit.keistiAukstine(h);
+    Ritinys ritinys(spindulys, aukstis);
 
-	std::cout << "Ritinio tūtis: " << rit.gautiTuri() << std::endl;
+    std::cout << "Ritinio tūris: " << ritinys.gautiTuri() << std::endl;
+
+    return 0;
 }
