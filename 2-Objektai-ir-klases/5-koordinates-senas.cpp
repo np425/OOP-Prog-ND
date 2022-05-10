@@ -47,4 +47,6 @@ int main() {
     std::cin >> atk.pabaiga;
 
     std::cout << "Atstumas tarp dviejų taškų: " << atk.skaiciuotiAtstuma() << std::endl;
+
+    return 0;
 }
