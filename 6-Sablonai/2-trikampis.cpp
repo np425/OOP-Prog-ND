@@ -60,7 +60,7 @@ public:
         }
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Trikampis& trikampis) {
+    friend std::ostream &operator<<(std::ostream &os, const Trikampis &trikampis) {
         os << "Kraštinė A: " << trikampis.a_ << std::endl;
         os << "Kraštinė B: " << trikampis.b_ << std::endl;
         os << "Kraštinė C: " << trikampis.c_ << std::endl;
