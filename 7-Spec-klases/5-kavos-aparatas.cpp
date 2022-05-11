@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <array>
+#include <stdexcept>
 
 /*
 
-5 Užduotis:
+7.5 Užduotis:
  - Klasė Gėrimas:
    - pavadinimas
    - kaina
@@ -18,29 +20,27 @@
 */
 
 // Išreiškiama sveikais skaičiais kad lengviau būtų skaičiuoti
-typedef unsigned centai;
+typedef unsigned Centai;
+
+constexpr std::array<Centai, 8> NOMINALAI = {200, 100, 50, 20, 10, 5, 2, 1};
 
 struct Gerimas {
-    std::string pav;
-    centai kaina;
+    const char *pavadinimas;
+    Centai kainaCentais;
+
+    friend std::ostream &operator<<(std::ostream &is, const Gerimas &gerimas) {
+        std::cout << gerimas.pavadinimas << ": " << gerimas.kainaCentais / 100.0 << "€";
+        return is;
+    }
 };
 
-std::ostream& operator<<(std::ostream& is, const Gerimas& ger) {
-    std::cout << ger.pav << ": " << ger.kaina / 100.0 << "€";
-    return is;
-}
-
-constexpr centai NOMINALAI[] = {200, 100, 50, 20, 10, 5, 2, 1};
-
-std::vector<double> atskirtiGraza(centai visaGraza) {
+std::vector<double> atskirtiGraza(Centai visaGraza) {
     std::vector<double> atsGraza;
 
-    constexpr unsigned nomKiek = sizeof(NOMINALAI)/sizeof(NOMINALAI[0]);
-
-    for (unsigned i = 0; i < nomKiek; ) {
+    for (unsigned i = 0; i < NOMINALAI.size();) {
         if (visaGraza / NOMINALAI[i]) {
             visaGraza = visaGraza - NOMINALAI[i];
-            atsGraza.push_back(NOMINALAI[i] / 100.0); 
+            atsGraza.push_back(NOMINALAI[i] / 100.0);
         } else {
             ++i;
         }
@@ -50,68 +50,77 @@ std::vector<double> atskirtiGraza(centai visaGraza) {
 }
 
 class KavosAutomatas {
-    static constexpr unsigned gerimuKiek = 5;
-    static Gerimas gerimai[gerimuKiek];
-    static const Gerimas *pasirinkimas;
+public:
+    static constexpr const unsigned GERIMU_KIEKIS = 5;
+    static constexpr const std::array<Gerimas, GERIMU_KIEKIS> GERIMAI = {
+        Gerimas{"Latte", 70},
+        Gerimas{"Cappuccino", 80},
+        Gerimas{"Espresso", 90},
+        Gerimas{"Affogato", 130},
+        Gerimas{"Flat White", 70}
+    };
+
+private:
+    static const Gerimas *gerimoPasirinkimas_;
 
 public:
-    // gerSk nuo 1
-    static void pasirinktiGerima(unsigned gerSk) {
-        if (gerSk > gerimuKiek) {
+    static void pasirinktiMeniuGerima(unsigned gerimoMeniuSkaicius) {
+        if (gerimoMeniuSkaicius > GERIMU_KIEKIS) {
             throw std::runtime_error("Nėra tokio gėrimo");
         }
-        pasirinkimas = &gerimai[gerSk-1];
+        gerimoPasirinkimas_ = &GERIMAI[gerimoMeniuSkaicius - 1];
     }
 
-    static std::vector<double> pirktiPasirinktaGerima(double mok) {
-        if (!pasirinkimas) {
+    static std::vector<double> pirktiPasirinktaGerima(double imoka) {
+        if (!gerimoPasirinkimas_) {
             throw std::runtime_error("Nėra pasirinkto gėrimo");
         }
 
-        centai mokCentais = (centai)(mok * 100);
+        auto imokaCentais = (Centai) (imoka * 100);
 
-        if (mokCentais < pasirinkimas->kaina) {
+        if (imokaCentais < gerimoPasirinkimas_->kainaCentais) {
             throw std::runtime_error("Neužtenka pinigų nusipirkti gėrimo");
         }
 
-        centai visaGraza = mokCentais - pasirinkimas->kaina;
+        Centai visaGraza = imokaCentais - gerimoPasirinkimas_->kainaCentais;
 
         return atskirtiGraza(visaGraza);
     }
 
     static void rodytiMeniu() {
-       for (unsigned i = 0; i < gerimuKiek; ++i) {
-           std::cout << i+1 << ". " << gerimai[i] << std::endl;
-       }
+        for (unsigned i = 0; i < GERIMU_KIEKIS; ++i) {
+            std::cout << i + 1 << ". " << GERIMAI[i] << std::endl;
+        }
     }
 };
 
-const Gerimas* KavosAutomatas::pasirinkimas = nullptr;
-Gerimas KavosAutomatas::gerimai[gerimuKiek] = {
-    {"Latte", 70}, 
-    {"Cappuccino", 80}, 
-    {"Espresso", 90}, 
-    {"Affogato", 130}, 
-    {"Flat White", 70}
-};
+const Gerimas *KavosAutomatas::gerimoPasirinkimas_ = nullptr;
+constexpr const std::array<Gerimas, KavosAutomatas::GERIMU_KIEKIS> KavosAutomatas::GERIMAI;
+//= {
+//    Gerimas{"Latte", 70},
+//    Gerimas{"Cappuccino", 80},
+//    Gerimas{"Espresso", 90},
+//    Gerimas{"Affogato", 130},
+//    Gerimas{"Flat White", 70}
+//};
 
 void nusipirktiGerima() {
-    unsigned gerSk;
+    unsigned gerimoMeniuSkaicius;
+
     std::cout << "Įveskite gėrimo skaičių: ";
-    std::cin >> gerSk;
+    std::cin >> gerimoMeniuSkaicius;
 
-    KavosAutomatas::pasirinktiGerima(gerSk);
+    KavosAutomatas::pasirinktiMeniuGerima(gerimoMeniuSkaicius);
 
-    double piniguSuma;
-    std::cout << "Įveskite pinigų sumą: ";
-    std::cin >> piniguSuma;
+    double imoka;
+    std::cout << "Įveskite pinigų įmoką: ";
+    std::cin >> imoka;
 
-    std::vector<double> graza;
-    graza = KavosAutomatas::pirktiPasirinktaGerima(piniguSuma);
+    std::vector<double> graza = KavosAutomatas::pirktiPasirinktaGerima(imoka);
 
     std::cout << "Graža: " << std::endl;
-    for (const double& g : graza) {
-        std::cout << g << "€" << std::endl;
+    for (const double &pinigas: graza) {
+        std::cout << pinigas << "€" << std::endl;
     }
 }
 
@@ -120,7 +129,7 @@ int main() {
 
     try {
         nusipirktiGerima();
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         std::cerr << e.what() << std::endl;
         return 1;
     }

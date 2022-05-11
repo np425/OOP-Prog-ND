@@ -1,8 +1,10 @@
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 /*
 
-4 Užduotis:
+7.4 Užduotis:
  - Klasė Taskas:
    - x
    - y
@@ -12,71 +14,80 @@
    - skaičiuoja perimetrą
    - skaičiuoja plotą
  - Pasirenka kiekį stačiakampių
- - Atspausdina plotą, perimetrą 
+ - Pasirenka bendrą tašką stačiakampių
+ - Parenka individualų tašką kiekvienam stačiakampiui
+ - Atspausdina plotą, perimetrą
+ - Vėl pasirenka bendrą tašką stačiakampių
+ - Vėl atspausdina plotą, perimetrą
 */
 
-struct Taskas {
+class Taskas {
+public:
     double x;
     double y;
-};
 
-std::istream& operator>>(std::istream& is, Taskas& t) {
-    std::cin >> t.x >> t.y;
-}
+    friend std::istream &operator>>(std::istream &is, Taskas &taskas) {
+        return is >> taskas.x >> taskas.y;
+    }
+};
 
 class Staciakampis {
-    static Taskas t1;
-    Taskas t2;
+    static Taskas bendrasTaskas_;
+    Taskas individualusTaskas_;
 
 public:
-    Staciakampis() {
+    explicit Staciakampis(Taskas taskas) : individualusTaskas_(taskas) {
     }
 
-    static void keistiT1(Taskas t) {
-        t1 = t;
+    static void keistiBendraTaska(Taskas taskas) {
+        bendrasTaskas_ = taskas;
     }
 
-    void keistiT2(Taskas t) {
-        t2 = t;
+    double gautiPerimetra() const {
+        return std::abs(2 * (individualusTaskas_.x - bendrasTaskas_.x + individualusTaskas_.y - bendrasTaskas_.y));
     }
 
-    double gautiPerimetra() {
-        return abs(2 * (t2.x - t1.x + t2.y - t1.y));
-    }
-
-    double gautiPlota() {
-        return abs((t2.x - t1.x) * (t2.y - t1.y));
+    double gautiPlota() const {
+        return std::abs((individualusTaskas_.x - bendrasTaskas_.x) * (individualusTaskas_.y - bendrasTaskas_.y));
     }
 };
-Taskas Staciakampis::t1;
+
+Taskas Staciakampis::bendrasTaskas_{0, 0};
 
 int main() {
-    Taskas t;
+    Taskas taskas{};
+    std::cout << "Įveskite bendrą stačiakampių tašką (x,y): ";
+    std::cin >> taskas;
 
-    std::cout << "Iveskite pirmaji staciakampiu taska (x,y):" << std::endl;
-    std::cin >> t;
+    Staciakampis::keistiBendraTaska(taskas);
 
-    Staciakampis::keistiT1(t);
+    unsigned staciakampiuKiekis;
+    std::cout << "Įveskite stačiakampių kiekį: ";
+    std::cin >> staciakampiuKiekis;
 
-    unsigned n;
-    std::cout << "Kiek staciakampiu skaiciuosite?" << std::endl;
-    std::cin >> n;    
+    std::vector<Staciakampis> staciakampiai;
 
-    Staciakampis* stac = new Staciakampis[n];
+    for (unsigned i = 0; i < staciakampiuKiekis; ++i) {
+        std::cout << "Įveskite " << i + 1 << " stačiakampio individualų tašką (x,y): ";
+        std::cin >> taskas;
 
-    for (unsigned i = 0; i < n; ++i) {
-        std::cout << "Iveskite " << i+1 << " staciakampo antraji taska (x,y):" << std::endl;
-        std::cin >> t;
-
-        stac[i].keistiT2(t);
+        staciakampiai.emplace_back(taskas);
     }
 
-    for (unsigned i = 0; i < n; ++i) {
-        std::cout << i + 1 << " Staciakampio perimetras = " << stac[i].gautiPerimetra() << std::endl;
-        std::cout << i + 1 << " Staciakampio plotas = " << stac[i].gautiPlota() << std::endl;
+    for (unsigned i = 0; i < staciakampiuKiekis; ++i) {
+        std::cout << i + 1 << " Stačiakampio perimetras = " << staciakampiai[i].gautiPerimetra() << std::endl;
+        std::cout << i + 1 << " Stačiakampio plotas = " << staciakampiai[i].gautiPlota() << std::endl;
     }
 
-    delete[] stac;
+    std::cout << "Vėl įveskite bendrą stačiakampių tašką (x,y): ";
+    std::cin >> taskas;
+
+    Staciakampis::keistiBendraTaska(taskas);
+
+    for (unsigned i = 0; i < staciakampiuKiekis; ++i) {
+        std::cout << i + 1 << " Stačiakampio perimetras = " << staciakampiai[i].gautiPerimetra() << std::endl;
+        std::cout << i + 1 << " Stačiakampio plotas = " << staciakampiai[i].gautiPlota() << std::endl;
+    }
 
     return 0;
 }
