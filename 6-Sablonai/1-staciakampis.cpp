@@ -1,10 +1,8 @@
 #include <iostream>
-#include <cmath> // M_PI
-#define POW_2(x) (x*x)
 
 /*
 
-1 Užduotis:
+6.1 Užduotis:
  - Klasė stačiakampis <T1,T2>
    - ilgis (T1)
    - plotis (T2)
@@ -17,59 +15,52 @@
  - Atspausdina kiekvieno stačiakampio plotą
 */
 
-template <typename T1, typename T2>
+template<class IlgioTipas, class PlocioTipas, class PlotoTipas = PlocioTipas>
 class Staciakampis {
-	T1 ilgis;
-	T2 plotis;
-	T2 plotas;
+    IlgioTipas ilgis_;
+    PlocioTipas plotis_;
+    PlotoTipas plotas_;
+
+    inline PlotoTipas skaiciuotiPlota() const {
+        return ilgis_ * plotis_;
+    }
 
 public:
-	T2 gautiPlota() {
-		return this->plotas;
-	}
+    Staciakampis(IlgioTipas ilgis, PlocioTipas plotis) : ilgis_(ilgis), plotis_(plotis) {
+        plotas_ = skaiciuotiPlota();
+    }
 
-	void keistiIlgi(T1 ilgis) {
-		this->ilgis = ilgis;
-		plotas = ilgis*plotis;
-	}
-
-	void keistiPloti(T2 plotis) {
-		this->plotis = plotis;
-		plotas = ilgis*plotis;
-	}
+    PlotoTipas gautiPlota() const {
+        return plotas_;
+    }
 };
 
-template <typename T1, typename T2>
-void nuskaitytiStaciakampi(Staciakampis<T1,T2>& stac) {
-	T1 ilgis;
-	T2 plotis;
+template<class IlgioTipas, class PlocioTipas, class PlotoTipas = PlocioTipas>
+inline Staciakampis<IlgioTipas, PlocioTipas> nuskaitytiStaciakampi() {
+    IlgioTipas ilgis;
+    PlocioTipas plotis;
 
-	std::cout << "Įveskite stačiakampio ilgį: ";
-	std::cin >> ilgis;
+    std::cout << "Įveskite stačiakampio ilgį: ";
+    std::cin >> ilgis;
 
-	std::cout << "Įveskite stačiakampio plotį: ";
-	std::cin >> plotis;
+    std::cout << "Įveskite stačiakampio plotį: ";
+    std::cin >> plotis;
 
-	stac.keistiIlgi(ilgis);
-	stac.keistiPloti(plotis);
+    return Staciakampis<IlgioTipas, PlocioTipas, PlotoTipas>(ilgis, plotis);
 }
 
 int main() {
-	Staciakampis<int, int> stac1;
-	Staciakampis<double, double> stac2;
-	Staciakampis<int, double> stac3;
+    std::cout << "1. ilgis, plotis ir plotas - sveikieji skaičiai" << std::endl;
+    auto staciakampis1 = nuskaitytiStaciakampi<int, int>();
+    std::cout << "Plotas: " << staciakampis1.gautiPlota() << std::endl;
 
-	std::cout << "1. ilgis, plotis ir plotas - sveikieji skaičiai" << std::endl;
-	nuskaitytiStaciakampi(stac1);
-	std::cout << "Plotas: " << stac1.gautiPlota() << std::endl;
+    std::cout << "2. ilgis, plotis ir plotas - realieji skaičiai" << std::endl;
+    auto staciakampis2 = nuskaitytiStaciakampi<double, double>();
+    std::cout << "Plotas: " << staciakampis2.gautiPlota() << std::endl;
 
-	std::cout << "2. ilgis, plotis ir plotas - realieji skaičiai" << std::endl;
-	nuskaitytiStaciakampi(stac2);
-	std::cout << "Plotas: " << stac2.gautiPlota() << std::endl;
+    std::cout << "3. ilgis - sveikasis skaičius, plotis ir plotas - realieji skaičiai" << std::endl;
+    auto staciakampis3 = nuskaitytiStaciakampi<int, double>();
+    std::cout << "Plotas: " << staciakampis3.gautiPlota() << std::endl;
 
-	std::cout << "3. ilgis - sveikasis skaičius, plotis ir plotas - realieji skaičiai" << std::endl;
-	nuskaitytiStaciakampi(stac3);
-	std::cout << "Plotas: " << stac3.gautiPlota() << std::endl;
-
-	return 0;
+    return 0;
 }
