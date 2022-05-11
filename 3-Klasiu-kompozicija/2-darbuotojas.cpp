@@ -42,11 +42,12 @@ public:
         darbuotojoPajamos_ = darboKaina - darbdavioMokesciai_ - darbuotojoMokesciai_;
     }
 
-    void spausdintiAtlyginima() const {
-        std::cout << "Atlyginimas ant popieriaus: " << darboKaina_ << std::endl;
-        std::cout << "Darbdavio mokesčiai: " << darbdavioMokesciai_ << std::endl;
-        std::cout << "Darbuotojo mokesčiai: " << darbuotojoMokesciai_ << std::endl;
-        std::cout << "Atlyginimas į rankas: " << darbuotojoPajamos_ << std::endl;
+    friend std::ostream& operator<<(std::ostream& os, const Atlyginimas& atlyginimas) {
+        os << "Atlyginimas ant popieriaus: " << atlyginimas.darboKaina_ << std::endl;
+        os << "Darbdavio mokesčiai: " << atlyginimas.darbdavioMokesciai_ << std::endl;
+        os << "Darbuotojo mokesčiai: " << atlyginimas.darbuotojoMokesciai_ << std::endl;
+        os << "Atlyginimas į rankas: " << atlyginimas.darbuotojoPajamos_;
+        return os;
     }
 };
 
@@ -61,10 +62,11 @@ public:
     }
 
 public:
-    void spausdintiDuomenis() {
-        std::cout << "Amžius: " << amzius_ << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
-        atlyginimas_.spausdintiAtlyginima();
+    friend std::ostream& operator<<(std::ostream& os, const Darbuotojas& darbuotojas) {
+        os << "Amžius: " << darbuotojas.amzius_ << std::endl;
+        os << "Darbo patirtis: " << darbuotojas.darboPatirtis_ << std::endl;
+        os << darbuotojas.atlyginimas_;
+        return os;
     }
 };
 
@@ -84,7 +86,7 @@ int main() {
 
     Darbuotojas darbuotojas(amzius, darboPatirtis, darboKaina);
 
-    darbuotojas.spausdintiDuomenis();
+    std::cout << darbuotojas << std::endl;
 
     return 0;
 }
