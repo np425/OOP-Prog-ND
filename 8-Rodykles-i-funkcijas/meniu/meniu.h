@@ -3,9 +3,6 @@
 
 #include <iostream>
 
-#include "../darbuotojas.h"
-#include "../personalas.h"
-
 class Meniu {
 public:
     virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) = 0;
@@ -16,12 +13,12 @@ public:
         while (true) {
             rodyti();
 
-            int ats;
+            int meniuPasirinkimas;
             std::cout << "Įveskite pasirinkimo numerį: ";
-            std::cin >> ats;
+            std::cin >> meniuPasirinkimas;
 
-            if (tinkamasPasirinkimas(ats)) {
-                return ats;
+            if (tinkamasPasirinkimas(meniuPasirinkimas)) {
+                return meniuPasirinkimas;
             }
 
             std::cout << "Nesupratau pasirinkimo, prašome pakartoti įvestį." << std::endl;

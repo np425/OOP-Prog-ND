@@ -2,7 +2,7 @@
 
 /*
 
-3 Užduotis:
+8.3 Užduotis:
  - Klasė Personalas:
    - 10 darbuotoju
    - filtravimo pagal pasirinktiną duomenį funkcija (tik pagal amžių, patirtį ar atlyginimą)

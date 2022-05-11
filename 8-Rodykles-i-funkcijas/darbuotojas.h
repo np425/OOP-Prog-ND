@@ -8,7 +8,7 @@
 
 class Darbuotojas {
 public:
-    constexpr static unsigned DuomenuKiekis = 6;
+    constexpr static unsigned DUOMENU_KIEKIS = 6;
 
     enum DuomensPasirinkimas {
         D_VARDAS = 0,
@@ -19,7 +19,7 @@ public:
         D_ATLYGINIMAS
     };
 
-    static constexpr const char *const DuomenuPasirinkimoPav[DuomenuKiekis] = {
+    static constexpr const char *const DuomenuPasirinkimoPavadinimas[DUOMENU_KIEKIS] = {
         "Vardas",
         "Pavardė",
         "Specialybė",
@@ -28,9 +28,7 @@ public:
         "Atlyginimas"
     };
 
-    typedef std::array<DuomensPasirinkimas, DuomenuKiekis> DuomenuPasirinkimas;
-
-    // typedef DuomensPasirinkimas DuomenuPasirinkimas[DuomenuKiekis];
+    typedef std::array<DuomensPasirinkimas, DUOMENU_KIEKIS> DuomenuPasirinkimas;
 
     static constexpr DuomenuPasirinkimas PRADINE_DUOMENU_PASIRINKIMO_TVARKA = {
         D_VARDAS,
@@ -42,61 +40,61 @@ public:
     };
 
 private:
-    std::string vardas;
-    std::string pavarde;
-    std::string specialybe;
-    unsigned amzius = 0;
-    unsigned patirtis = 0;
-    unsigned atlyginimas = 0;
+    std::string vardas_;
+    std::string pavarde_;
+    std::string specialybe_;
+    unsigned amzius_ = 0;
+    unsigned patirtis_ = 0;
+    unsigned atlyginimas_ = 0;
 
 public:
     Darbuotojas() = default;
 
     Darbuotojas(std::string vardas, std::string pavarde, std::string specialybe, unsigned amzius, unsigned patirtis,
                 unsigned atlyginimas)
-        : vardas(std::move(vardas)), pavarde(std::move(pavarde)), specialybe(std::move(specialybe)), amzius(amzius),
-          patirtis(patirtis), atlyginimas(atlyginimas) {
+        : vardas_(std::move(vardas)), pavarde_(std::move(pavarde)), specialybe_(std::move(specialybe)), amzius_(amzius),
+        patirtis_(patirtis), atlyginimas_(atlyginimas) {
     }
 
     inline bool duomenysUzpildyti() const {
-        return !vardas.empty() && !pavarde.empty() && !specialybe.empty() && amzius && patirtis && atlyginimas;
+        return !vardas_.empty() && !pavarde_.empty() && !specialybe_.empty() && amzius_ && patirtis_ && atlyginimas_;
     }
 
     void keistiVarda() {
         std::cout << "Įveskite vardą: " << std::endl;
         std::cin.ignore();
-        std::getline(std::cin, vardas);
+        std::getline(std::cin, vardas_);
     }
 
     void keistiPavarde() {
         std::cout << "Įveskite pavardę: " << std::endl;
         std::cin.ignore();
-        std::getline(std::cin, pavarde);
+        std::getline(std::cin, pavarde_);
     }
 
     void keistiSpecialybe() {
         std::cout << "Įveskite specialybę: " << std::endl;
         std::cin.ignore();
-        std::getline(std::cin, specialybe);
+        std::getline(std::cin, specialybe_);
     }
 
     void keistiAmziu() {
         std::cout << "Įveskite amžių: " << std::endl;
-        std::cin >> amzius;
+        std::cin >> amzius_;
     }
 
     void keistiPatirti() {
         std::cout << "Įveskite darbo patirtį: " << std::endl;
-        std::cin >> patirtis;
+        std::cin >> patirtis_;
     }
 
     void keistiAtlyginima() {
         std::cout << "Įveskite atlyginimą: " << std::endl;
-        std::cin >> atlyginimas;
+        std::cin >> atlyginimas_;
     }
 
     inline void keistiPasirinkima(const DuomensPasirinkimas pasirinkimas) {
-        constexpr void (Darbuotojas::*keitimai[Darbuotojas::DuomenuKiekis])() = {
+        constexpr void (Darbuotojas::*keitimai[Darbuotojas::DUOMENU_KIEKIS])() = {
             &Darbuotojas::keistiVarda, &Darbuotojas::keistiPavarde, &Darbuotojas::keistiSpecialybe,
             &Darbuotojas::keistiAmziu, &Darbuotojas::keistiPatirti, &Darbuotojas::keistiAtlyginima
         };
@@ -104,17 +102,29 @@ public:
         (this->*keitimai[pasirinkimas])();
     }
 
-    std::string gautiVarda() const { return vardas; }
+    std::string gautiVarda() const {
+        return vardas_;
+    }
 
-    std::string gautiPavarde() const { return pavarde; }
+    std::string gautiPavarde() const {
+        return pavarde_;
+    }
 
-    std::string gautiSpecialybe() const { return specialybe; }
+    std::string gautiSpecialybe() const {
+        return specialybe_;
+    }
 
-    unsigned gautiAmziu() const { return amzius; }
+    unsigned gautiAmziu() const {
+        return amzius_;
+    }
 
-    unsigned gautiPatirti() const { return patirtis; }
+    unsigned gautiPatirti() const {
+        return patirtis_;
+    }
 
-    unsigned gautiAtlyginima() const { return atlyginimas; }
+    unsigned gautiAtlyginima() const {
+        return atlyginimas_;
+    }
 
     inline unsigned gautiPasirinkima(const DuomensPasirinkimas pasirinkimas) const {
         switch (pasirinkimas) {
@@ -130,43 +140,43 @@ public:
     }
 
     void spausdintiVarda() const {
-        std::cout << "Vardas: " << vardas << std::endl;
+        std::cout << "Vardas: " << vardas_ << std::endl;
     }
 
     void spausdintiPavarde() const {
-        std::cout << "Pavardė: " << pavarde << std::endl;
+        std::cout << "Pavardė: " << pavarde_ << std::endl;
     }
 
     void spausdintiSpecialybe() const {
-        std::cout << "Specialybė: " << specialybe << std::endl;
+        std::cout << "Specialybė: " << specialybe_ << std::endl;
     }
 
     void spausdintiAmziu() const {
-        std::cout << "Amžius: " << amzius << std::endl;
+        std::cout << "Amžius: " << amzius_ << std::endl;
     }
 
     void spausdintiPatirti() const {
-        std::cout << "Patirtis: " << patirtis << std::endl;
+        std::cout << "Patirtis: " << patirtis_ << std::endl;
     }
 
     void spausdintiAtlyginima() const {
-        std::cout << "Atlyginimas: " << atlyginimas << std::endl;
+        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
     }
 
     inline void
     spausdintiDuomenis(const DuomenuPasirinkimas spausdinimoTvarka = PRADINE_DUOMENU_PASIRINKIMO_TVARKA) const {
-        constexpr void (Darbuotojas::*spausdinimai[DuomenuKiekis])() const = {
+        constexpr void (Darbuotojas::*spausdinimai[DUOMENU_KIEKIS])() const = {
             &Darbuotojas::spausdintiVarda, &Darbuotojas::spausdintiPavarde, &Darbuotojas::spausdintiSpecialybe,
             &Darbuotojas::spausdintiAmziu, &Darbuotojas::spausdintiPatirti, &Darbuotojas::spausdintiAtlyginima
         };
 
-        for (unsigned i = 0; i < DuomenuKiekis; ++i) {
+        for (unsigned i = 0; i < DUOMENU_KIEKIS; ++i) {
             //spausdintiPasirinkima(spausdinimoTvarka[i]);
             (this->*spausdinimai[spausdinimoTvarka[i]])();
         }
     }
 };
 
-constexpr const char *const Darbuotojas::DuomenuPasirinkimoPav[DuomenuKiekis];
+constexpr const char *const Darbuotojas::DuomenuPasirinkimoPavadinimas[DUOMENU_KIEKIS];
 
 #endif//OOP_PROG_ND_DARBUOTOJAS_H

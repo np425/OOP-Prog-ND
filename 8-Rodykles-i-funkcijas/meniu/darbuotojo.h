@@ -2,50 +2,51 @@
 #define OOP_PROG_ND_DARBUOTOJO_H
 
 #include "meniu.h"
+#include "../darbuotojas.h"
 
 class DarbuotojoIvestiesMeniu : public Meniu {
 protected:
-    Darbuotojas &mDarb;
+    Darbuotojas &darbuotojas_;
 
 public:
-    explicit DarbuotojoIvestiesMeniu(Darbuotojas &darb) : mDarb(darb) {
+    explicit DarbuotojoIvestiesMeniu(Darbuotojas &darb) : darbuotojas_(darb) {
     }
 
     bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
-        return pasirinkimas <= Darbuotojas::DuomenuKiekis;
+        return pasirinkimas <= Darbuotojas::DUOMENU_KIEKIS;
     }
 
     void rodyti() const override {
         std::cout << "Darbuotojo duomenys: " << std::endl;
 
         std::cout << "0. " << "Baigti įvedimą" << std::endl;
-        std::cout << "1. " << (!mDarb.gautiVarda().empty() ? "Keisti" : "Įrašyti") << " vardą: " << mDarb.gautiVarda()
+        std::cout << "1. " << (!darbuotojas_.gautiVarda().empty() ? "Keisti" : "Įrašyti") << " vardą: " << darbuotojas_.gautiVarda()
                   << std::endl;
-        std::cout << "2. " << (!mDarb.gautiPavarde().empty() ? "Keisti" : "Įrašyti") << " pavardę: "
-                  << mDarb.gautiPavarde() << std::endl;
-        std::cout << "3. " << (!mDarb.gautiSpecialybe().empty() ? "Keisti" : "Įrašyti") << " specialybę: "
-                  << mDarb.gautiSpecialybe() << std::endl;
-        std::cout << "4. " << (mDarb.gautiAmziu() ? "Keisti" : "Įrašyti") << " amžių: " << mDarb.gautiAmziu()
+        std::cout << "2. " << (!darbuotojas_.gautiPavarde().empty() ? "Keisti" : "Įrašyti") << " pavardę: "
+                  << darbuotojas_.gautiPavarde() << std::endl;
+        std::cout << "3. " << (!darbuotojas_.gautiSpecialybe().empty() ? "Keisti" : "Įrašyti") << " specialybę: "
+                  << darbuotojas_.gautiSpecialybe() << std::endl;
+        std::cout << "4. " << (darbuotojas_.gautiAmziu() ? "Keisti" : "Įrašyti") << " amžių: " << darbuotojas_.gautiAmziu()
                   << std::endl;
-        std::cout << "5. " << (mDarb.gautiPatirti() ? "Keisti" : "Įrašyti") << " patirtį: " << mDarb.gautiPatirti()
+        std::cout << "5. " << (darbuotojas_.gautiPatirti() ? "Keisti" : "Įrašyti") << " patirtį: " << darbuotojas_.gautiPatirti()
                   << std::endl;
-        std::cout << "6. " << (mDarb.gautiAtlyginima() ? "Keisti" : "Įrašyti") << " atlyginimą: "
-                  << mDarb.gautiAtlyginima() << std::endl;
+        std::cout << "6. " << (darbuotojas_.gautiAtlyginima() ? "Keisti" : "Įrašyti") << " atlyginimą: "
+                  << darbuotojas_.gautiAtlyginima() << std::endl;
     }
 
     void aptarnauti() override {
-        int meniuAts;
+        int meniuPasirinkimas;
 
         while (true) {
-            meniuAts = gautiPasirinkima();
+            meniuPasirinkimas = gautiPasirinkima();
 
-            if (meniuAts != 0) {
+            if (meniuPasirinkimas != 0) {
                 // -1, kadangi pirmas pasirinkimas prasideda nuo 0
-                mDarb.keistiPasirinkima((Darbuotojas::DuomensPasirinkimas) (meniuAts - 1));
+                darbuotojas_.keistiPasirinkima((Darbuotojas::DuomensPasirinkimas) (meniuPasirinkimas - 1));
                 continue;
             }
 
-            if (mDarb.duomenysUzpildyti()) {
+            if (darbuotojas_.duomenysUzpildyti()) {
                 break;
             }
 
@@ -56,7 +57,7 @@ public:
 
 class DarbuotojoDuomenuTvarkosSpausdinimoMeniu : public Meniu {
 protected:
-    Darbuotojas::DuomenuPasirinkimas &mSpausdinimoTvarka;
+    Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka_;
 
     void apkeistiPasirinkimoTvarka(int kaNr) {
         unsigned suKuoNr;
@@ -65,7 +66,7 @@ protected:
             std::cout << "Iveskite su kuriuo numeriu apkeisti: ";
             std::cin >> suKuoNr;
 
-            if (suKuoNr > 0 && suKuoNr <= Darbuotojas::DuomenuKiekis) {
+            if (suKuoNr > 0 && suKuoNr <= Darbuotojas::DUOMENU_KIEKIS) {
                 break;
             }
 
@@ -76,38 +77,38 @@ protected:
         kaNr = kaNr - 1;
         suKuoNr = suKuoNr - 1;
 
-        std::swap((int &) (mSpausdinimoTvarka[kaNr]), (int &) (mSpausdinimoTvarka[suKuoNr]));
+        std::swap((int &) (spausdinimoTvarka_[kaNr]), (int &) (spausdinimoTvarka_[suKuoNr]));
     }
 
 public:
     // Be & ?
     explicit DarbuotojoDuomenuTvarkosSpausdinimoMeniu(Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka)
-        : mSpausdinimoTvarka(spausdinimoTvarka) {
+        : spausdinimoTvarka_(spausdinimoTvarka) {
     }
 
     bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
-        return pasirinkimas <= Darbuotojas::DuomenuKiekis;
+        return pasirinkimas <= Darbuotojas::DUOMENU_KIEKIS;
     }
 
     void rodyti() const override {
         std::cout << "0. " << "Išsaugoti spausdinimo tvarką" << std::endl;
         std::cout << "   Spausdinimo eilės tvarka: (pasirinkti numerį, kad apkeisti)" << std::endl;
-        for (unsigned i = 0; i < Darbuotojas::DuomenuKiekis; ++i) {
-            std::cout << i + 1 << ". " << Darbuotojas::DuomenuPasirinkimoPav[mSpausdinimoTvarka[i]] << std::endl;
+        for (unsigned i = 0; i < Darbuotojas::DUOMENU_KIEKIS; ++i) {
+            std::cout << i + 1 << ". " << Darbuotojas::DuomenuPasirinkimoPavadinimas[spausdinimoTvarka_[i]] << std::endl;
         }
     }
 
     void aptarnauti() override {
-        int meniuAts;
+        int meniuPasirinkimas;
 
         while (true) {
-            meniuAts = gautiPasirinkima();
+            meniuPasirinkimas = gautiPasirinkima();
 
-            if (meniuAts == 0) {
+            if (meniuPasirinkimas == 0) {
                 break;
             }
 
-            apkeistiPasirinkimoTvarka(meniuAts);
+            apkeistiPasirinkimoTvarka(meniuPasirinkimas);
         }
     }
 };

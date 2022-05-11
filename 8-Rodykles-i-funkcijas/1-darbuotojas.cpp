@@ -2,7 +2,7 @@
 
 /*
 
-1 Užduotis:
+8.1 Užduotis:
  - Klasė darbuotojas:
    - vardas
    - pavardė
@@ -20,18 +20,18 @@
 
 
 int main() {
-    //Darbuotojas darb;
-    Darbuotojas darb("Nerijus", "Pocevičius", "IT Inžinierius", 19, 5, 200);
+    //Darbuotojas darbuotojas;
+    Darbuotojas darbuotojas("Nerijus", "Pocevičius", "IT Inžinierius", 19, 5, 200);
 
     Darbuotojas::DuomenuPasirinkimas spausdinimoTvarka(Darbuotojas::PRADINE_DUOMENU_PASIRINKIMO_TVARKA);
 
-    DarbuotojoIvestiesMeniu ivestiesMeniu(darb);
+    DarbuotojoIvestiesMeniu ivestiesMeniu(darbuotojas);
     DarbuotojoDuomenuTvarkosSpausdinimoMeniu spausdinimoTvarkosMeniu(spausdinimoTvarka);
 
     ivestiesMeniu.aptarnauti();
     spausdinimoTvarkosMeniu.aptarnauti();
 
-    darb.spausdintiDuomenis(spausdinimoTvarka);
+    darbuotojas.spausdintiDuomenis(spausdinimoTvarka);
 
     return 0;
 }

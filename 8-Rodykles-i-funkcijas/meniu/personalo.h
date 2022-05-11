@@ -4,12 +4,14 @@
 #include "meniu.h"
 #include "darbuotojo.h"
 
+#include "../personalas.h"
+
 class PersonaloIvestiesMeniu : public Meniu {
 protected:
-    Personalas &mPersonalas;
+    Personalas &personalas_;
 
 public:
-    explicit PersonaloIvestiesMeniu(Personalas &personalas) : mPersonalas(personalas) {
+    explicit PersonaloIvestiesMeniu(Personalas &personalas) : personalas_(personalas) {
     }
 
     bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
@@ -19,27 +21,27 @@ public:
     void rodyti() const override {
         std::cout << "0. " << "Baigti pildyti personalą" << std::endl;
         for (unsigned i = 0; i < Personalas::DARBUOTOJU_KIEKIS; ++i) {
-            bool uzpildytas = mPersonalas.gautiDarbuotoja(i).duomenysUzpildyti();
+            bool uzpildytas = personalas_.gautiDarbuotoja(i).duomenysUzpildyti();
 
             std::cout << i + 1 << ". " << (uzpildytas ? "Keisti" : "Pildyti")
-                      << " darbuotoją: " << mPersonalas.gautiDarbuotoja(i).gautiVarda() << " "
-                      << mPersonalas.gautiDarbuotoja(i).gautiPavarde() << std::endl;
+                      << " darbuotoją: " << personalas_.gautiDarbuotoja(i).gautiVarda() << " "
+                      << personalas_.gautiDarbuotoja(i).gautiPavarde() << std::endl;
         }
     }
 
     void aptarnauti() override {
-        int meniuAts;
+        int meniuPasirinkimas;
 
         while (true) {
-            meniuAts = gautiPasirinkima();
+            meniuPasirinkimas = gautiPasirinkima();
 
-            if (meniuAts != 0) {
-                DarbuotojoIvestiesMeniu darbIvestiesMeniu(mPersonalas.gautiDarbuotoja(meniuAts - 1));
+            if (meniuPasirinkimas != 0) {
+                DarbuotojoIvestiesMeniu darbIvestiesMeniu(personalas_.gautiDarbuotoja(meniuPasirinkimas - 1));
                 darbIvestiesMeniu.aptarnauti();
                 continue;
             }
 
-            if (mPersonalas.duomenysUzpildyti()) {
+            if (personalas_.duomenysUzpildyti()) {
                 break;
             }
 
@@ -50,12 +52,12 @@ public:
 
 class PersonaloFiltravimoMeniuPagalAmziu : public Meniu {
 protected:
-    Personalas &mPersonalas;
-    Darbuotojas::DuomenuPasirinkimas &mSpausdinimoTvarka;
+    Personalas &personalas_;
+    Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka_;
 
 public:
     PersonaloFiltravimoMeniuPagalAmziu(Personalas &personalas, Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka)
-        : mPersonalas(personalas), mSpausdinimoTvarka(spausdinimoTvarka) {
+        : personalas_(personalas), spausdinimoTvarka_(spausdinimoTvarka) {
     }
 
     bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
@@ -71,31 +73,31 @@ public:
     }
 
     void aptarnauti() override {
-        int meniuAts;
+        int meniuPasirinkimas;
 
         constexpr bool (*amziuGrupes[DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS])(unsigned) = {
             DarbuotojoAmzius::jaunas, DarbuotojoAmzius::vidutinis,
             DarbuotojoAmzius::pagyvenes, DarbuotojoAmzius::senyvas
         };
 
-        meniuAts = gautiPasirinkima();
+        meniuPasirinkimas = gautiPasirinkima();
 
-        if (meniuAts == 0) {
-            mPersonalas.spausdintiDarbuotojus(mSpausdinimoTvarka);
+        if (meniuPasirinkimas == 0) {
+            personalas_.spausdintiDarbuotojus(spausdinimoTvarka_);
         } else {
-            mPersonalas.filtruotiAmziu(amziuGrupes[meniuAts - 1], mSpausdinimoTvarka);
+            personalas_.filtruotiAmziu(amziuGrupes[meniuPasirinkimas - 1], spausdinimoTvarka_);
         }
     }
 };
 
 class PersonaloFiltravimoMeniu : public Meniu {
 protected:
-    Personalas &mPersonalas;
-    Darbuotojas::DuomenuPasirinkimas &mSpausdinimoTvarka;
+    Personalas &personalas_;
+    Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka_;
 
 public:
     PersonaloFiltravimoMeniu(Personalas &personalas, Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka)
-        : mPersonalas(personalas), mSpausdinimoTvarka(spausdinimoTvarka) {
+        : personalas_(personalas), spausdinimoTvarka_(spausdinimoTvarka) {
     }
 
     bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
@@ -110,16 +112,16 @@ public:
     }
 
     void aptarnauti() override {
-        constexpr Darbuotojas::DuomensPasirinkimas darbFiltrai[3] = {
+        constexpr Darbuotojas::DuomensPasirinkimas darbuotojoFiltrai[3] = {
             Darbuotojas::D_AMZIUS, Darbuotojas::D_PATIRTIS, Darbuotojas::D_ATLYGINIMAS
         };
 
-        int meniuAts;
+        int meniuPasirinkimas;
 
-        meniuAts = gautiPasirinkima();
+        meniuPasirinkimas = gautiPasirinkima();
 
-        if (meniuAts == 0) {
-            mPersonalas.spausdintiDarbuotojus(mSpausdinimoTvarka);
+        if (meniuPasirinkimas == 0) {
+            personalas_.spausdintiDarbuotojus(spausdinimoTvarka_);
             return;
         }
 
@@ -135,10 +137,8 @@ public:
             return reiksme >= min && reiksme <= max;
         };
 
-        mPersonalas.filtruotiMinMax(filtras, min, max, darbFiltrai[meniuAts - 1], mSpausdinimoTvarka);
+        personalas_.filtruotiMinMax(filtras, min, max, darbuotojoFiltrai[meniuPasirinkimas - 1], spausdinimoTvarka_);
     }
 };
-
-#include "meniu.h"
 
 #endif//OOP_PROG_ND_PERSONALO_H

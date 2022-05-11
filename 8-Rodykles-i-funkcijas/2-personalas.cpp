@@ -2,7 +2,7 @@
 
 /*
 
-2 Užduotis:
+8.2 Užduotis:
  - Klasė Personalas:
    - 10 darbuotoju
    - filtravimo palei amžių funkcija

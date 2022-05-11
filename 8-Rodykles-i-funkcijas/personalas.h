@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
+#include <algorithm>
 
 #include "darbuotojas.h"
 
@@ -35,12 +36,12 @@ public:
     constexpr static unsigned DARBUOTOJU_KIEKIS = 10;
 
 private:
-    std::array<Darbuotojas, DARBUOTOJU_KIEKIS> mDarbuotojai;
+    std::array<Darbuotojas, DARBUOTOJU_KIEKIS> darbuotojai_;
 
 public:
     Personalas() = default;
 
-    explicit Personalas(std::array<Darbuotojas, DARBUOTOJU_KIEKIS> darbuotojai) : mDarbuotojai(std::move(darbuotojai)) {
+    explicit Personalas(std::array<Darbuotojas, DARBUOTOJU_KIEKIS> darbuotojai) : darbuotojai_(std::move(darbuotojai)) {
     }
 
     //const Darbuotojas& gautiDarbuotoja(unsigned idx) const {
@@ -48,33 +49,30 @@ public:
     //}
 
     Darbuotojas &gautiDarbuotoja(unsigned idx) {
-        return mDarbuotojai[idx];
+        return darbuotojai_[idx];
     }
 
     bool duomenysUzpildyti() const {
-        for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
-            if (!mDarbuotojai[i].duomenysUzpildyti()) {
-                return false;
-            }
-        }
-        return true;
+        return std::all_of(darbuotojai_.begin(), darbuotojai_.end(), [](const Darbuotojas &darbuotojas) {
+            return darbuotojas.duomenysUzpildyti();
+        });
     }
 
     void spausdintiDarbuotojus(const Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka) const {
         std::cout << LINE << std::endl;
-        for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
-            mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);
+        for (const auto &darbuotojas: darbuotojai_) {
+            darbuotojas.spausdintiDuomenis(spausdinimoTvarka);
             std::cout << LINE << std::endl;
         }
     }
 
     // Filtravimas pagal amžių (2 užduotis)
     void
-    filtruotiAmziu(bool (*fAmziausFiltras)(unsigned), const Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka) const {
+    filtruotiAmziu(bool (*amziausFiltras)(unsigned), const Darbuotojas::DuomenuPasirinkimas &spausdinimoTvarka) const {
         std::cout << LINE << std::endl;
-        for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
-            if (fAmziausFiltras(mDarbuotojai[i].gautiAmziu())) {
-                mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);
+        for (const auto &darbuotojas: darbuotojai_) {
+            if (amziausFiltras(darbuotojas.gautiAmziu())) {
+                darbuotojas.spausdintiDuomenis(spausdinimoTvarka);
                 std::cout << LINE << std::endl;
             }
         }
@@ -91,10 +89,10 @@ public:
         }
 
         std::cout << LINE << std::endl;
-        for (unsigned i = 0; i < DARBUOTOJU_KIEKIS; ++i) {
-            unsigned duomuo = mDarbuotojai[i].gautiPasirinkima(duomensPasirinkimas);
+        for (const auto &darbuotojas: darbuotojai_) {
+            unsigned duomuo = darbuotojas.gautiPasirinkima(duomensPasirinkimas);
             if (filtras(duomuo, min, max)) {
-                mDarbuotojai[i].spausdintiDuomenis(spausdinimoTvarka);
+                darbuotojas.spausdintiDuomenis(spausdinimoTvarka);
                 std::cout << LINE << std::endl;
             }
         }
