@@ -41,7 +41,7 @@ public:
         return pavadinimas_;
     }
 
-    virtual double gautiVisoKaina() const {
+    virtual double gautiKiekioKaina() const {
         return kiekis_ * vntKaina_;
     }
 };
@@ -54,7 +54,7 @@ public:
         : Prekes(std::move(pavadinimas), kiekis, vntKaina), nuolaida_(nuolaida) {
     }
 
-    double gautiVisoKaina() const override {
+    double gautiKiekioKaina() const override {
         return kiekis_ * vntKaina_ * (1 - nuolaida_);
     }
 };
@@ -117,7 +117,7 @@ int main() {
     gautiPrekes(prekes);
 
     for (const auto &preke: prekes) {
-        double prekesKaina = preke->gautiVisoKaina();
+        double prekesKaina = preke->gautiKiekioKaina();
 
         visuPrekiuKaina += prekesKaina;
 
