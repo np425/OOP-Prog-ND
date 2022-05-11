@@ -29,8 +29,8 @@ public:
     }
 };
 
-template<class T>
-void gautiReiksme(T &reiksme) {
+template<class ReiksmesTipas>
+void gautiReiksme(ReiksmesTipas &reiksme) {
     while (true) {
         std::cin >> reiksme;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -62,10 +62,10 @@ int main() {
         std::cout << "Nesupratau ką ivedėte, prašau įvesti dar kartą." << std::endl;
     }
 
-    GeometrineFigura fig(krastSk, taisyklingumas == 't');
+    GeometrineFigura figura(krastSk, taisyklingumas == 't');
 
-    std::cout << "Kraštinių skaičius: " << fig.gautiKrastSk() << std::endl;
-    std::cout << "Taisyklingumas: " << (fig.gautiTaisyklinguma() ? "taip" : "ne") << std::endl;
+    std::cout << "Kraštinių skaičius: " << figura.gautiKrastSk() << std::endl;
+    std::cout << "Taisyklingumas: " << (figura.gautiTaisyklinguma() ? "taip" : "ne") << std::endl;
 
     return 0;
 }

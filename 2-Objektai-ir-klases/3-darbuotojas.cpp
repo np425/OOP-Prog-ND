@@ -27,36 +27,33 @@ private:
     double mokesciai_;
 
 public:
-    void spausdintiDuomenis() const {
-        std::cout << "Amžius: " << amzius_ << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
-        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
-        spausdintiMokescius();
-    }
-
     void keistiAmziu(unsigned amzius) {
-        this->amzius_ = amzius;
+        amzius_ = amzius;
     }
 
     void keistiDarboPatirti(unsigned patirtis) {
-        this->darboPatirtis_ = patirtis;
+        darboPatirtis_ = patirtis;
     }
 
     void keistiAtlyginima(unsigned atlyginimas) {
-        this->atlyginimas_ = atlyginimas;
+        atlyginimas_ = atlyginimas;
     }
 
-    double skaiciuotiMokescius() {
-        return this->mokesciai_ = atlyginimas_ * (SODRA + MOKESCIAI);
+    void skaiciuotiMokescius() {
+        mokesciai_ = atlyginimas_ * (SODRA + MOKESCIAI);
     }
 
-    void spausdintiMokescius() const {
-        std::cout << "Mokesčiai: " << this->mokesciai_ << std::endl;
+    friend std::ostream& operator<<(std::ostream& os, const Darbuotojas& darbuotojas) {
+        os << "Amžius: " << darbuotojas.amzius_ << std::endl;
+        os << "Darbo patirtis: " << darbuotojas.darboPatirtis_ << std::endl;
+        os << "Atlyginimas: " << darbuotojas.atlyginimas_ << std::endl;
+        os << "Mokesčiai: " << darbuotojas.mokesciai_;
+        return os;
     }
 };
 
 int main() {
-    Darbuotojas darb{};
+    Darbuotojas darbuotojas{};
 
     unsigned amzius;
     unsigned darboPatirtis;
@@ -71,12 +68,12 @@ int main() {
     std::cout << "Atlyginimas: ";
     std::cin >> atlyginimas;
 
-    darb.keistiAmziu(amzius);
-    darb.keistiDarboPatirti(darboPatirtis);
-    darb.keistiAtlyginima(atlyginimas);
+    darbuotojas.keistiAmziu(amzius);
+    darbuotojas.keistiDarboPatirti(darboPatirtis);
+    darbuotojas.keistiAtlyginima(atlyginimas);
 
-    darb.skaiciuotiMokescius();
-    darb.spausdintiDuomenis();
+    darbuotojas.skaiciuotiMokescius();
+    std::cout << darbuotojas << std::endl;
 
     return 0;
 }

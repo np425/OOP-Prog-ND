@@ -18,12 +18,6 @@ class Darbuotojas {
     unsigned atlyginimas_;
 
 public:
-    void spausdintiDuomenis() const {
-        std::cout << "Amžius: " << amzius_ << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
-        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
-    }
-
     void keistiAmziu(unsigned amzius) {
         amzius_ = amzius;
     }
@@ -35,10 +29,17 @@ public:
     void keistiAtlyginima(unsigned atlyginimas) {
         atlyginimas_ = atlyginimas;
     }
+
+    friend std::ostream& operator<<(std::ostream& os, const Darbuotojas& darbuotojas) {
+        os << "Amžius: " << darbuotojas.amzius_ << std::endl;
+        os << "Darbo patirtis: " << darbuotojas.darboPatirtis_ << std::endl;
+        os << "Atlyginimas: " << darbuotojas.atlyginimas_;
+        return os;
+    }
 };
 
 int main() {
-    Darbuotojas darb{};
+    Darbuotojas darbuotojas{};
 
     unsigned amzius;
     unsigned darboPatirtis;
@@ -53,11 +54,11 @@ int main() {
     std::cout << "Atlyginimas: ";
     std::cin >> atlyginimas;
 
-    darb.keistiAmziu(amzius);
-    darb.keistiDarboPatirti(darboPatirtis);
-    darb.keistiAtlyginima(atlyginimas);
+    darbuotojas.keistiAmziu(amzius);
+    darbuotojas.keistiDarboPatirti(darboPatirtis);
+    darbuotojas.keistiAtlyginima(atlyginimas);
 
-    darb.spausdintiDuomenis();
+    std::cout << darbuotojas << std::endl;
 
     return 0;
 }

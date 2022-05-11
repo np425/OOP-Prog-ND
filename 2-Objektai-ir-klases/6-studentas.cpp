@@ -51,24 +51,25 @@ public:
         vidurkis_ = skaiciuotiVidurki();
     }
 
-    void spausdinti() {
-        std::cout << "Dalykų skaičius: " << DALYKU_SK << std::endl;
-        std::cout << "Vardas: " << vardas_ << std::endl;
-        std::cout << "Pavardė: " << pavarde_ << std::endl;
+    friend std::ostream& operator<<(std::ostream& os, const Studentas& studentas) {
+        os << "Dalykų skaičius: " << DALYKU_SK << std::endl;
+        os << "Vardas: " << studentas.vardas_ << std::endl;
+        os << "Pavardė: " << studentas.pavarde_ << std::endl;
 
-        std::cout << "Kreditai: ";
-        for (const Dalykas &dalykas: dalykai_) {
-            std::cout << dalykas.kreditai << " ";
+        os << "Kreditai: ";
+        for (const Dalykas &dalykas: studentas.dalykai_) {
+            os << dalykas.kreditai << " ";
         }
-        std::cout << std::endl;
+        os << std::endl;
 
-        std::cout << "Įvertinimai: ";
-        for (const Dalykas &dalykas: dalykai_) {
-            std::cout << dalykas.pazymis << " ";
+        os << "Įvertinimai: ";
+        for (const Dalykas &dalykas: studentas.dalykai_) {
+            os << dalykas.pazymis << " ";
         }
-        std::cout << std::endl;
+        os << std::endl;
 
-        std::cout << "Vidurkis: " << vidurkis_ << std::endl;
+        os << "Vidurkis: " << studentas.vidurkis_;
+        return os;
     }
 };
 
@@ -95,7 +96,7 @@ int main() {
 
     Studentas studentas(vardas, pavarde, dalykai);
 
-    studentas.spausdinti();
+    std::cout << studentas << std::endl;
 
     return 0;
 }

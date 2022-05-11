@@ -37,15 +37,12 @@ public:
         mokesciai_ = skaiciuotiMokescius();
     }
 
-    void spausdintiDuomenis() const {
-        std::cout << "Amžius: " << amzius_ << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis_ << std::endl;
-        std::cout << "Atlyginimas: " << atlyginimas_ << std::endl;
-        spausdintiMokescius();
-    }
-
-    void spausdintiMokescius() const {
-        std::cout << "Mokesčiai: " << this->mokesciai_ << std::endl;
+    friend std::ostream& operator<<(std::ostream& os, const Darbuotojas& darbuotojas) {
+        os << "Amžius: " << darbuotojas.amzius_ << std::endl;
+        os << "Darbo patirtis: " << darbuotojas.darboPatirtis_ << std::endl;
+        os << "Atlyginimas: " << darbuotojas.atlyginimas_ << std::endl;
+        os << "Mokesčiai: " << darbuotojas.mokesciai_;
+        return os;
     }
 };
 
@@ -63,9 +60,9 @@ int main() {
     std::cout << "Atlyginimas: ";
     std::cin >> atlyginimas;
 
-    Darbuotojas darb(amzius, darboPatirtis, atlyginimas);
+    Darbuotojas darbuotojas(amzius, darboPatirtis, atlyginimas);
 
-    darb.spausdintiDuomenis();
+    std::cout << darbuotojas << std::endl;
 
     return 0;
 }

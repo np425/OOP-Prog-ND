@@ -18,26 +18,27 @@ public:
     unsigned darboPatirtis;
     unsigned atlyginimas;
 
-    void spausdintiDuomenis() const {
-        std::cout << "Amžius: " << amzius << std::endl;
-        std::cout << "Darbo patirtis: " << darboPatirtis << std::endl;
-        std::cout << "Atlyginimas: " << atlyginimas << std::endl;
+    friend std::ostream& operator<<(std::ostream& os, const Darbuotojas& darbuotojas) {
+        os << "Amžius: " << darbuotojas.amzius << std::endl;
+        os << "Darbo patirtis: " << darbuotojas.darboPatirtis << std::endl;
+        os << "Atlyginimas: " << darbuotojas.atlyginimas;
+        return os;
     }
 };
 
 int main() {
-    Darbuotojas darb{};
+    Darbuotojas darbuotojas{};
 
     std::cout << "Amžius: ";
-    std::cin >> darb.amzius;
+    std::cin >> darbuotojas.amzius;
 
     std::cout << "Darbo patirtis: ";
-    std::cin >> darb.darboPatirtis;
+    std::cin >> darbuotojas.darboPatirtis;
 
     std::cout << "Atlyginimas: ";
-    std::cin >> darb.atlyginimas;
+    std::cin >> darbuotojas.atlyginimas;
 
-    darb.spausdintiDuomenis();
+    std::cout << darbuotojas << std::endl;
 
     return 0;
 }
