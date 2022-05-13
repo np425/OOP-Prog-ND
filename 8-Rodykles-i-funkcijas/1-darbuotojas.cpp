@@ -25,11 +25,8 @@ int main() {
 
     Darbuotojas::DuomenuPasirinkimas spausdinimoTvarka(Darbuotojas::PRADINE_DUOMENU_PASIRINKIMO_TVARKA);
 
-    DarbuotojoIvestiesMeniu ivestiesMeniu(darbuotojas);
-    DarbuotojoDuomenuTvarkosSpausdinimoMeniu spausdinimoTvarkosMeniu(spausdinimoTvarka);
-
-    ivestiesMeniu.aptarnauti();
-    spausdinimoTvarkosMeniu.aptarnauti();
+    DarbuotojoIvestiesMeniu(darbuotojas).aptarnauti();
+    DarbuotojoDuomenuTvarkosSpausdinimoMeniu(spausdinimoTvarka).aptarnauti();
 
     darbuotojas.spausdintiDuomenis(spausdinimoTvarka);
 

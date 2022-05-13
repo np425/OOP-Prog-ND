@@ -20,13 +20,9 @@ int main() {
     Personalas personalas(gautiPradiniusDarbuotojus());
     Darbuotojas::DuomenuPasirinkimas spausdinimoTvarka(Darbuotojas::PRADINE_DUOMENU_PASIRINKIMO_TVARKA);
 
-    PersonaloIvestiesMeniu personaloIvestiesMeniu(personalas);
-    PersonaloFiltravimoMeniuPagalAmziu personaloFiltravimoMeniu(personalas, spausdinimoTvarka);
-    DarbuotojoDuomenuTvarkosSpausdinimoMeniu spausdinimoTvarkosMeniu(spausdinimoTvarka);
-
-    personaloIvestiesMeniu.aptarnauti();
-    spausdinimoTvarkosMeniu.aptarnauti();
-    personaloFiltravimoMeniu.aptarnauti();
+    PersonaloIvestiesMeniu(personalas).aptarnauti();
+    PersonaloFiltravimoMeniuPagalAmziu(personalas, spausdinimoTvarka).aptarnauti();
+    DarbuotojoDuomenuTvarkosSpausdinimoMeniu(spausdinimoTvarka).aptarnauti();
 
     return 0;
 }

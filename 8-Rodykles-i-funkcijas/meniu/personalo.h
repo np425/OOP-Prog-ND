@@ -14,7 +14,7 @@ public:
     explicit PersonaloIvestiesMeniu(Personalas &personalas) : personalas_(personalas) {
     }
 
-    bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
+    bool tinkamasPasirinkimas(unsigned pasirinkimas) const override {
         return pasirinkimas <= Personalas::DARBUOTOJU_KIEKIS;
     }
 
@@ -30,10 +30,10 @@ public:
     }
 
     void aptarnauti() override {
-        int meniuPasirinkimas;
+        unsigned meniuPasirinkimas;
 
         while (true) {
-            meniuPasirinkimas = gautiPasirinkima();
+            meniuPasirinkimas = gautiTinkamaPasirinkima();
 
             if (meniuPasirinkimas != 0) {
                 DarbuotojoIvestiesMeniu darbIvestiesMeniu(personalas_.gautiDarbuotoja(meniuPasirinkimas - 1));
@@ -60,7 +60,7 @@ public:
         : personalas_(personalas), spausdinimoTvarka_(spausdinimoTvarka) {
     }
 
-    bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
+    bool tinkamasPasirinkimas(unsigned pasirinkimas) const override {
         return pasirinkimas <= DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS;
     }
 
@@ -73,14 +73,14 @@ public:
     }
 
     void aptarnauti() override {
-        int meniuPasirinkimas;
+        unsigned meniuPasirinkimas;
 
         constexpr bool (*amziuGrupes[DarbuotojoAmzius::AMZIU_GRUPIU_KIEKIS])(unsigned) = {
             DarbuotojoAmzius::jaunas, DarbuotojoAmzius::vidutinis,
             DarbuotojoAmzius::pagyvenes, DarbuotojoAmzius::senyvas
         };
 
-        meniuPasirinkimas = gautiPasirinkima();
+        meniuPasirinkimas = gautiTinkamaPasirinkima();
 
         if (meniuPasirinkimas == 0) {
             personalas_.spausdintiDarbuotojus(spausdinimoTvarka_);
@@ -100,7 +100,7 @@ public:
         : personalas_(personalas), spausdinimoTvarka_(spausdinimoTvarka) {
     }
 
-    bool tinkamasPasirinkimas(unsigned pasirinkimas) override {
+    bool tinkamasPasirinkimas(unsigned pasirinkimas) const override {
         return pasirinkimas <= 3;
     }
 
@@ -116,9 +116,9 @@ public:
             Darbuotojas::D_AMZIUS, Darbuotojas::D_PATIRTIS, Darbuotojas::D_ATLYGINIMAS
         };
 
-        int meniuPasirinkimas;
+        unsigned meniuPasirinkimas;
 
-        meniuPasirinkimas = gautiPasirinkima();
+        meniuPasirinkimas = gautiTinkamaPasirinkima();
 
         if (meniuPasirinkimas == 0) {
             personalas_.spausdintiDarbuotojus(spausdinimoTvarka_);

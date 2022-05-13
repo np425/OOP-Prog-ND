@@ -5,17 +5,18 @@
 
 class Meniu {
 public:
-    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) = 0;
+    virtual bool tinkamasPasirinkimas(unsigned pasirinkimas) const = 0;
 
     virtual void rodyti() const = 0;
 
-    virtual int gautiPasirinkima() {
+    virtual unsigned gautiTinkamaPasirinkima() const {
         while (true) {
             rodyti();
 
-            int meniuPasirinkimas;
+            unsigned meniuPasirinkimas;
             std::cout << "Įveskite pasirinkimo numerį: ";
             std::cin >> meniuPasirinkimas;
+            std::cin.ignore();
 
             if (tinkamasPasirinkimas(meniuPasirinkimas)) {
                 return meniuPasirinkimas;
