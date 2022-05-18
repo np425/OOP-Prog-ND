@@ -40,7 +40,7 @@ int main() {
             continue;
         }
 
-        seniVidurkiai.push_back(vidurkis / (double)SKAICIU_KIEKIS);
+        seniVidurkiai.push_back(vidurkis / SKAICIU_KIEKIS);
 
         for (double senasVidurkis: seniVidurkiai) {
             std::cout << senasVidurkis << " ";
