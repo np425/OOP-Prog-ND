@@ -40,7 +40,7 @@ int main() {
             continue;
         }
 
-        seniVidurkiai.push_back(vidurkis);
+        seniVidurkiai.push_back(vidurkis / (double)SKAICIU_KIEKIS);
 
         for (double senasVidurkis: seniVidurkiai) {
             std::cout << senasVidurkis << " ";
@@ -51,9 +51,9 @@ int main() {
             seniVidurkiai.erase(seniVidurkiai.begin());
         }
 
-        skaiciai.pop();
-
         vidurkis -= skaiciai.front();
+
+        skaiciai.pop();
     }
 
     return 0;
